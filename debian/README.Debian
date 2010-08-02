@@ -1,0 +1,14 @@
+fred for Debian
+---------------
+
+This is a preliminary Debian package for fred, Freenet REference
+Daemon. 
+
+Some notes:
+
+o For the first-time users: access http://127.0.0.1:8888/ after
+installation and follow the wizard. 
+
+o Most of freenet-related files (such as seednodes.fref, freenet.ini or logs and datastore) are/should be placed in /var/lib/fred. 
+
+ -- Masayuki Hatta (mhatta) <mhatta@debian.org>  Fri, 10 Jul 2009 13:48:38 +0900

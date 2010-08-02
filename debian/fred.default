@@ -1,0 +1,16 @@
+# Defaults for fred initscript
+# sourced by /etc/init.d/fred
+# installed at /etc/default/fred by the maintainer scripts
+
+#
+# This is a POSIX shell fragment
+#
+
+# Do you really want to run fred?
+RUN=yes
+
+# Nice level
+NICE=10
+
+# Additional options that are passed to the Daemon.
+DAEMON_OPTS="-Dnetworkaddress.cache.ttl=0 -Dnetworkaddress.cache.negative.ttl=0 -enableassertions:freenet"
