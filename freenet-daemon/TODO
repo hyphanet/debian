@@ -1,2 +1,7 @@
-- freenet is still under developement so it is VITAL that
+- freenet is still under development so it is VITAL that
   we get start-stop-daemon to log the stdout/stderr of java.
+
+- build freenet-ext properly; atm it just downloads it
+
+- split freenet-ext up properly
+  - first thing is to split arch-dependent JNI libs out of the jar

@@ -157,7 +157,7 @@ start_server() {
             start-stop-daemon --start --quiet --background --nicelevel $NICE \
                         --make-pidfile --pidfile $PIDFILE \
                         --chuid $DAEMONUSER --chdir $WORKDIR \
-                        --exec $DAEMON -- $DAEMON_OPTS -classpath /usr/share/java/freenet-ext.jar:/usr/share/java/freenet-cvs-snapshot.jar freenet.node.NodeStarter /etc/freenet/freenet.ini
+                        --exec $DAEMON -- $DAEMON_OPTS -classpath /usr/lib/java/freenet-ext.jar:/usr/share/java/freenet-cvs-snapshot.jar freenet.node.NodeStarter /etc/freenet/freenet.ini
             errcode=$?
         fi
         return $errcode

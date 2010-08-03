@@ -13,8 +13,8 @@ if [ "$ARCH" = "x86_64" -o "$ARCH" = "amd64" ]; then
 	BITS="-Dbits=64";
 fi
 
-cd fred-${FREENET_BRANCH} && git pull origin && ant distclean && cd ..
-cd contrib-${FREENET_BRANCH} && git pull origin && cd freenet_ext && ant clean ${BITS} && cd ../..
+cd fred-${FREENET_BRANCH} && git pull origin && cd ..
+cd contrib-${FREENET_BRANCH} && git pull origin && cd ..
 
 GIT_DESCRIBED=$(cd fred-${FREENET_BRANCH} && git describe && cd ..)
 DEB_VERSION=${FREENET_VERSION_RELEASED}+${GIT_DESCRIBED}
@@ -23,12 +23,20 @@ rm -rf freenet-daemon-${DEB_VERSION}
 rm -rf freenet-daemon-${FREENET_BRANCH}-dist
 rm -f *.changes *.deb *.dsc *.debian.tar.gz *.orig.tar.bz2
 
-mkdir freenet-daemon-${DEB_VERSION}
-cp -aL fred-${FREENET_BRANCH} contrib-${FREENET_BRANCH} freenet-daemon-${DEB_VERSION}
-find freenet-daemon-${DEB_VERSION}/fred-${FREENET_BRANCH} -name .git|xargs rm -rf
-find freenet-daemon-${DEB_VERSION}/fred-${FREENET_BRANCH} -name .cvsignore|xargs rm -rf
-find freenet-daemon-${DEB_VERSION}/fred-${FREENET_BRANCH} -name .gitignore|xargs rm -rf
-find freenet-daemon-${DEB_VERSION}/contrib-${FREENET_BRANCH} -name .git|xargs rm -rf
+mkdir freenet-daemon-${DEB_VERSION} || exit 1
+cp -aH fred-${FREENET_BRANCH} contrib-${FREENET_BRANCH} freenet-daemon-${DEB_VERSION} || exit 1
+
+cd freenet-daemon-${DEB_VERSION}
+# remove cruft
+find fred-${FREENET_BRANCH} -name .git | xargs rm -rf
+find fred-${FREENET_BRANCH} -name .cvsignore | xargs rm -rf
+find fred-${FREENET_BRANCH} -name .gitignore | xargs rm -rf
+find contrib-${FREENET_BRANCH} -name .git | xargs rm -rf
+# ant clean
+cd fred-${FREENET_BRANCH} && ant distclean && cd ..
+cd contrib-${FREENET_BRANCH} && cd freenet_ext && ant clean ${BITS} && cd ../..
+cd ..
+
 tar cfj freenet-daemon_${DEB_VERSION}.orig.tar.bz2 freenet-daemon-${DEB_VERSION}
 
 rm -f debian/seednodes.fref
