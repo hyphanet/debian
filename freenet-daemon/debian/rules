@@ -33,4 +33,4 @@ clean::
 	rm -rf $(CURDIR)/fred-@RELEASE@/generator/js/lib
 
 #	cd $(CURDIR)/contrib-@RELEASE@/freenet_ext && ant clean
-	cd $(CURDIR)/fred-@RELEASE@/ && ant distclean
+#	cd $(CURDIR)/fred-@RELEASE@/ && ant distclean

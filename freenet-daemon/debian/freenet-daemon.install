@@ -1,2 +1,2 @@
 debian/seednodes.fref usr/share/freenet
-
+debian/freenet.ini etc/freenet

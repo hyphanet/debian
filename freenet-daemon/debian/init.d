@@ -46,7 +46,7 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/bin/java            # Introduce the server's location here
 NAME=freenet-daemon             # Introduce the short server's name here
 DESC="Freenet REference Daemon" # Introduce a short description here
-LOGDIR=/var/lib/freenet         # Log directory to use
+LOGDIR=/var/log/freenet         # Log directory to use
 
 PIDFILE=/var/run/$NAME.pid
 
@@ -131,19 +131,19 @@ running() {
 start_server() {
 # Start the process using the wrapper
         if [ -z "$DAEMONUSER" ] ; then
-            start_daemon -p $PIDFILE $DAEMON $DAEMON_OPTS
+            start_daemon -p $PIDFILE $DAEMON $DAEMON_OPTS $DAEMON_ARGS
             errcode=$?
         else
 # if we are using a daemonuser then change the user id
             start-stop-daemon --start --quiet --background --nicelevel $NICE \
                         --make-pidfile --pidfile $PIDFILE \
                         --chuid $DAEMONUSER --chdir $LOGDIR \
-                        --exec $DAEMON -- $DAEMON_OPTS -classpath /usr/lib/java/freenet-ext.jar:/usr/share/java/freenet-cvs-snapshot.jar freenet.node.NodeStarter
+                        --exec $DAEMON -- $DAEMON_OPTS -classpath /usr/lib/java/freenet-ext.jar:/usr/share/java/freenet-cvs-snapshot.jar freenet.node.NodeStarter $DAEMON_ARGS
             errcode=$?
 	fi
 	# Install freenodes.fref if not found
-	if [ ! -f /var/lib/freenet/seednodes.fref ] ; then 
-	  cp /usr/share/freenet/seednodes.fref /var/lib/freenet
+	if [ ! -f /etc/freenet/noderef/seednodes.fref ] ; then 
+	  cp /usr/share/freenet/seednodes.fref /etc/freenet/noderef/
 	fi
         return $errcode
 }
