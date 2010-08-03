@@ -1,9 +1,9 @@
-Freenet(fred) for Debian/Ubuntu
+Freenet for Debian/Ubuntu
 -------------------------------
 
-This repository contains files needed to build .deb package for fred. 
+This repository contains files needed to build .deb packages for Freenet.
 
-o How to build
+o How to build freenet-daemon(fred)
 
 First, you need to clone fred-official and contrib-official from
 Freenet GitHub repos. 
@@ -16,4 +16,8 @@ Then put things in a directory as following:
 |-- debian
 `-- fred-official
 
-Now you can run the build script, 00update-fred.sh.  You might need to install needed Build-Dep packages.  Check the Build-Depends line in debian/control or follow error messages.  Built packages will be put into a directory called fred-official-dist.
+Now you can run the build script, 00update-fred.sh.  You might need to install needed Build-Dep packages.  Check the Build-Depends line in debian/control or follow error messages.  Built packages will be put into a directory called freenet-daemon-official-dist.
+
+
+
+
