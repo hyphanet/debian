@@ -1,0 +1,8 @@
+- postinst needs to set permissions of:
+  - /etc/freenet
+  - /var/log/freenet
+  - /var/run/freenet
+  - /var/lib/freenet
+
+- freenet is still under developement so it is VITAL that
+  we get start-stop-daemon to log the stdout/stderr of java.

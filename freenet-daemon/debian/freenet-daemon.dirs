@@ -1,5 +1,6 @@
 usr/share/java
 usr/share/freenet
 var/lib/freenet
+var/log/freenet
 etc/freenet
 etc/freenet/noderef
