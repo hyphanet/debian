@@ -140,11 +140,15 @@ start_server() {
                         --chuid $DAEMONUSER --chdir $LOGDIR \
                         --exec $DAEMON -- $DAEMON_OPTS -classpath /usr/share/java/freenet-ext.jar:/usr/share/java/freenet-cvs-snapshot.jar freenet.node.NodeStarter $DAEMON_ARGS
             errcode=$?
-	fi
-	# Install freenodes.fref if not found
-	if [ ! -f /etc/freenet/noderef/seednodes.fref ] ; then 
-	  cp /usr/share/freenet/seednodes.fref /etc/freenet/noderef/
-	fi
+        fi
+        # Install freenodes.fref if not found
+        if [ ! -f /etc/freenet/noderef/seednodes.fref ]; then
+            cp /usr/share/freenet/seednodes.fref /etc/freenet/noderef/
+        fi
+        # Install freenet.ini if not found
+        if [ ! -f /etc/freenet/freenet.ini ]; then
+            cp /usr/share/freenet/freenet.ini /etc/freenet/
+        fi
         return $errcode
 }
 
