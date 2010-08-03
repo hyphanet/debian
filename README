@@ -5,16 +5,21 @@ This repository contains files needed to build .deb packages for Freenet.
 
 o How to build freenet-daemon(fred)
 
-First, you need to clone fred-official and contrib-official from
+First, you need to clone fred-staging and contrib-staging from
 Freenet GitHub repos. 
+
+FIXME hack
+Checkout the "dir-struct" branch from fred-staging. This uses a directory
+structure which fits the FHS much better, instead of shoving everything in
+/var/lib/freenet.
 
 Then put things in a directory as following:
 
 .
 |-- 00update-fred.sh
-|-- contrib-official
+|-- contrib-official -> contrib-staging
 |-- debian
-`-- fred-official
+`-- fred-official -> contrib-staging
 
 Now you can run the build script, 00update-fred.sh.  You might need to install needed Build-Dep packages.  Check the Build-Depends line in debian/control or follow error messages.  Built packages will be put into a directory called freenet-daemon-official-dist.
 
