@@ -1,4 +1,4 @@
-Source: fred
+Source: freenet-daemon
 Section: net
 Priority: extra
 Maintainer: Masayuki Hatta (mhatta) <mhatta@debian.org>
@@ -7,9 +7,11 @@ Standards-Version: 3.9.1
 Homepage: http://freenetproject.org/
 Tag: interface::daemon, network::server
 
-Package: fred
+Package: freenet-daemon
 Architecture: any
 Depends: adduser, openjdk-6-jre | java-runtime, ${shlibs:Depends}, ${misc:Depends}
+Replaces: fred
+Conflicts: fred
 Description: Freenet REference Daemon
  Freenet lets you anonymously share files, browse and publish
  "freesites" (web sites accessible only through Freenet) and chat on
@@ -18,7 +20,9 @@ Description: Freenet REference Daemon
  users only connect to their friends, is very difficult to
  detect. Communications by Freenet nodes are encrypted and are routed
  through other nodes to make it extremely difficult to determine who
- is requesting the information and what its content is.
+ is requesting the information and what its content is.  This package
+ provides the Freenet REference Daemon(fred), which is vital for
+ running a Freenet node. 
  .
  Note that fred creates a datastore of at least 256 MB on first
  startup.

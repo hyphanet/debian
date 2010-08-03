@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# init.d script with LSB support for fred.
+# init.d script with LSB support for freenet-daemon.
 #
 # Please read this init.d carefully and modify the sections to
 # adjust it to the program you want to run.
@@ -24,7 +24,7 @@
 # Suite 330, Boston, MA 02111-1307 USA
 #
 ### BEGIN INIT INFO
-# Provides:          fred
+# Provides:          freenet-daemon
 # Required-Start:    $network $local_fs $remote_fs
 # Required-Stop:     $remote_fs	
 # Should-Start:      $named
@@ -44,9 +44,9 @@
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 
 DAEMON=/usr/bin/java            # Introduce the server's location here
-NAME=fred                       # Introduce the short server's name here
+NAME=freenet-daemon             # Introduce the short server's name here
 DESC="Freenet REference Daemon" # Introduce a short description here
-LOGDIR=/var/lib/fred            # Log directory to use
+LOGDIR=/var/lib/freenet         # Log directory to use
 
 PIDFILE=/var/run/$NAME.pid
 
@@ -142,8 +142,8 @@ start_server() {
             errcode=$?
 	fi
 	# Install freenodes.fref if not found
-	if [ ! -f /var/lib/fred/seednodes.fref ] ; then 
-	  cp /usr/share/fred/seednodes.fref /var/lib/fred
+	if [ ! -f /var/lib/freenet/seednodes.fref ] ; then 
+	  cp /usr/share/freenet/seednodes.fref /var/lib/freenet
 	fi
         return $errcode
 }

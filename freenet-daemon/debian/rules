@@ -5,13 +5,13 @@ include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 
 # Add here any variable or target overrides you need.
 
-build/fred::
+build/freenet-daemon::
 	# Build freenet-ext.jar
 #	cd $(CURDIR)/contrib-@RELEASE@/freenet_ext && ant
 
 	# Copy freenet-ext.jar to the main build directory
 #	install -d $(CURDIR)/fred-@RELEASE@/lib
-#	cp $(CURDIR)/contrib-@RELEASE@/freenet_ext/freenet-ext.jar $(CURDIR)/fred-@RELEASE@lib/
+#	cp $(CURDIR)/contrib-@RELEASE@/freenet_ext/freenet-ext.jar $(CURDIR)/fred-@RELEASE@/lib/
 
 	# Copy needed .jar's from each Debian packages
 	install -d $(CURDIR)/fred-@RELEASE@/generator/js/lib
@@ -24,9 +24,9 @@ build/fred::
 	# Build freenet.jar
 	cd $(CURDIR)/fred-@RELEASE@ && ant -Dskip_tests=true -Dgit.revision=@REVISION@ -DGWT.lib.dev=$(CURDIR)/fred-@RELEASE@/generator/js/lib/gwt-dev-linux.jar -Djunit.location=/usr/share/java/junit-4.x.jar
 
-install/fred::
-	install -m 644 $(CURDIR)/fred-@RELEASE@/lib/freenet-cvs-snapshot.jar $(CURDIR)/debian/fred/usr/share/java
-	install -m 644 $(CURDIR)/fred-@RELEASE@/lib/freenet-ext.jar $(CURDIR)/debian/fred/usr/lib/java
+install/freenet-daemon::
+	install -m 644 $(CURDIR)/fred-@RELEASE@/lib/freenet-cvs-snapshot.jar $(CURDIR)/debian/freenet-daemon/usr/share/java
+	install -m 644 $(CURDIR)/fred-@RELEASE@/lib/freenet-ext.jar $(CURDIR)/debian/freenet-daemon/usr/lib/java
 
 clean::
 	rm -rf $(CURDIR)/contrib-@RELEASE@/wrapper/lib
@@ -34,4 +34,3 @@ clean::
 
 #	cd $(CURDIR)/contrib-@RELEASE@/freenet_ext && ant clean
 	cd $(CURDIR)/fred-@RELEASE@/ && ant distclean
-
