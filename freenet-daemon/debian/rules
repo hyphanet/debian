@@ -26,7 +26,7 @@ build/freenet-daemon::
 
 install/freenet-daemon::
 	install -m 644 $(CURDIR)/fred-@RELEASE@/lib/freenet-cvs-snapshot.jar $(CURDIR)/debian/freenet-daemon/usr/share/java
-	install -m 644 $(CURDIR)/fred-@RELEASE@/lib/freenet-ext.jar $(CURDIR)/debian/freenet-daemon/usr/lib/java
+	install -m 644 $(CURDIR)/fred-@RELEASE@/lib/freenet-ext.jar $(CURDIR)/debian/freenet-daemon/usr/share/java
 
 clean::
 	rm -rf $(CURDIR)/contrib-@RELEASE@/wrapper/lib

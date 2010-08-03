@@ -138,7 +138,7 @@ start_server() {
             start-stop-daemon --start --quiet --background --nicelevel $NICE \
                         --make-pidfile --pidfile $PIDFILE \
                         --chuid $DAEMONUSER --chdir $LOGDIR \
-                        --exec $DAEMON -- $DAEMON_OPTS -classpath /usr/lib/java/freenet-ext.jar:/usr/share/java/freenet-cvs-snapshot.jar freenet.node.NodeStarter $DAEMON_ARGS
+                        --exec $DAEMON -- $DAEMON_OPTS -classpath /usr/share/java/freenet-ext.jar:/usr/share/java/freenet-cvs-snapshot.jar freenet.node.NodeStarter $DAEMON_ARGS
             errcode=$?
 	fi
 	# Install freenodes.fref if not found

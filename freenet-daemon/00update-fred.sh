@@ -24,7 +24,7 @@ rm -rf freenet-daemon-${FREENET_BRANCH}-dist
 rm -f *.changes *.deb *.dsc *.debian.tar.gz *.orig.tar.bz2
 
 mkdir freenet-daemon-${DEB_VERSION}
-cp -alL fred-${FREENET_BRANCH} contrib-${FREENET_BRANCH} freenet-daemon-${DEB_VERSION}
+cp -aL fred-${FREENET_BRANCH} contrib-${FREENET_BRANCH} freenet-daemon-${DEB_VERSION}
 find freenet-daemon-${DEB_VERSION}/fred-${FREENET_BRANCH} -name .git|xargs rm -rf
 find freenet-daemon-${DEB_VERSION}/fred-${FREENET_BRANCH} -name .cvsignore|xargs rm -rf
 find freenet-daemon-${DEB_VERSION}/fred-${FREENET_BRANCH} -name .gitignore|xargs rm -rf
