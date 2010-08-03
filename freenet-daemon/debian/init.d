@@ -46,11 +46,14 @@ PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON=/usr/bin/java            # Introduce the server's location here
 NAME=freenet-daemon             # Introduce the short server's name here
 DESC="Freenet REference Daemon" # Introduce a short description here
+WORKDIR=/var/lib/freenet        # Working directory
 LOGDIR=/var/log/freenet         # Log directory to use
+PIDDIR=/var/run/freenet         # Run (pidfile) directory
 
-PIDFILE=/var/run/$NAME.pid
+PIDFILE=$PIDDIR/$NAME.pid       # Server pidfile
+LOGFILE=$LOGDIR/$NAME.log       # Server logfile
 
-test -x $DAEMON || exit 0
+test -x $DAEMON || exit 1
 
 . /lib/lsb/init-functions
 
@@ -72,7 +75,6 @@ STARTTIME=10            # Time to wait for the server to start, in seconds
                         # be a false positive (says it did not start
                         # when it actually did)
 
-LOGFILE=$LOGDIR/$NAME.log  # Server logfile
 DAEMONUSER=freenet      # Users to run the daemons as. If this value
                         # is set start-stop-daemon will chuid the server
 
@@ -130,17 +132,7 @@ running() {
 
 start_server() {
 # Start the process using the wrapper
-        if [ -z "$DAEMONUSER" ] ; then
-            start_daemon -p $PIDFILE $DAEMON $DAEMON_OPTS $DAEMON_ARGS
-            errcode=$?
-        else
-# if we are using a daemonuser then change the user id
-            start-stop-daemon --start --quiet --background --nicelevel $NICE \
-                        --make-pidfile --pidfile $PIDFILE \
-                        --chuid $DAEMONUSER --chdir $LOGDIR \
-                        --exec $DAEMON -- $DAEMON_OPTS -classpath /usr/share/java/freenet-ext.jar:/usr/share/java/freenet-cvs-snapshot.jar freenet.node.NodeStarter $DAEMON_ARGS
-            errcode=$?
-        fi
+
         # Install freenodes.fref if not found
         if [ ! -f /etc/freenet/noderef/seednodes.fref ]; then
             cp /usr/share/freenet/seednodes.fref /etc/freenet/noderef/
@@ -148,6 +140,25 @@ start_server() {
         # Install freenet.ini if not found
         if [ ! -f /etc/freenet/freenet.ini ]; then
             cp /usr/share/freenet/freenet.ini /etc/freenet/
+        fi
+
+        # Set up $PIDDIR with the right permissions
+        if [ ! -d $PIDDIR ]; then
+            mkdir -p $PIDDIR || exit 1
+        fi
+        chown $DAEMONUSER:$DAEMONUSER $PIDDIR
+        chmod 750 $PIDDIR
+
+        if [ -z "$DAEMONUSER" ] ; then
+            start_daemon -p $PIDFILE $DAEMON $DAEMON_OPTS $DAEMON_ARGS
+            errcode=$?
+        else
+# if we are using a daemonuser then change the user id
+            start-stop-daemon --start --quiet --background --nicelevel $NICE \
+                        --make-pidfile --pidfile $PIDFILE \
+                        --chuid $DAEMONUSER --chdir $WORKDIR \
+                        --exec $DAEMON -- $DAEMON_OPTS -classpath /usr/share/java/freenet-ext.jar:/usr/share/java/freenet-cvs-snapshot.jar freenet.node.NodeStarter /etc/freenet/freenet.ini
+            errcode=$?
         fi
         return $errcode
 }

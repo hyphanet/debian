@@ -14,6 +14,3 @@ NICE=10
 
 # Additional options that are passed to the Daemon.
 DAEMON_OPTS="-Dnetworkaddress.cache.ttl=0 -Dnetworkaddress.cache.negative.ttl=0 -enableassertions:freenet"
-
-# Arguments passed to the Daemon.
-DAEMON_ARGS="/etc/freenet/freenet.ini"
