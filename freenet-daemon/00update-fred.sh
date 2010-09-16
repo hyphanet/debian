@@ -1,6 +1,6 @@
 #!/bin/sh
 FREENET_VERSION_RELEASED=0.7.5
-DEB_REVISION=0.1
+DEB_REVISION="$(dpkg-parsechangelog | grep Version | cut -d- -f2)"
 
 FREENET_BRANCH=$1
 if [ -z "$1" ]; then

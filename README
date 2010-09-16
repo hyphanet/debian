@@ -20,10 +20,6 @@ o How to build freenet-daemon(fred)
 First, you need to clone fred-staging and contrib-staging from
 Freenet GitHub repos. 
 
-(FIXME hack) Then, checkout the "dir-struct" branch from fred-staging. This
-uses a directory structure which fits the FHS better, instead of shoving
-everything in /var/lib/freenet.
-
 Then put things in a directory as following:
 
 .
