@@ -5,3 +5,6 @@
 
 - split freenet-ext up properly
   - first thing is to split arch-dependent JNI libs out of the jar
+
+/var/run/freenet maybe needs to be moved.
+program directories need to be put in a new section in the freenet config.

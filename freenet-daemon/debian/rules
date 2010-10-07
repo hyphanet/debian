@@ -6,31 +6,12 @@ include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 # Add here any variable or target overrides you need.
 
 build/freenet-daemon::
-	# Build freenet-ext.jar
-#	cd $(CURDIR)/contrib-@RELEASE@/freenet_ext && ant
-
-	# Copy freenet-ext.jar to the main build directory
-#	install -d $(CURDIR)/fred-@RELEASE@/lib
-#	cp $(CURDIR)/contrib-@RELEASE@/freenet_ext/freenet-ext.jar $(CURDIR)/fred-@RELEASE@/lib/
-
-	# Copy needed .jar's from each Debian packages
-	install -d $(CURDIR)/fred-@RELEASE@/generator/js/lib
-	cp /usr/share/java/ant.jar $(CURDIR)/fred-@RELEASE@/generator/js/lib
-	cp /usr/share/java/commons-collections3.jar $(CURDIR)/fred-@RELEASE@/generator/js/lib
-	cp /usr/share/java/eclipse-ecj.jar $(CURDIR)/fred-@RELEASE@/generator/js/lib
-	cp /usr/share/java/gwt-dev-linux.jar $(CURDIR)/fred-@RELEASE@/generator/js/lib
-	cp /usr/share/java/gwt-user.jar $(CURDIR)/fred-@RELEASE@/generator/js/lib
-
-	# Build freenet.jar
-	cd $(CURDIR)/fred-@RELEASE@ && ant -Dskip_tests=true -Dgit.revision=@REVISION@ -DGWT.lib.dev=$(CURDIR)/fred-@RELEASE@/generator/js/lib/gwt-dev-linux.jar -Djunit.location=/usr/share/java/junit-4.x.jar
+	# Build freenet.jar, freenet-ext.jar, and generate GWT javascript
+	cd $(CURDIR)/fred-@RELEASE@ && ant -Dgit.revision=@REVISION@ -Dtest.skip=true -Dsuppress.gjs=false -Dsuppress.ext=false all
 
 install/freenet-daemon::
 	install -m 644 $(CURDIR)/fred-@RELEASE@/lib/freenet-cvs-snapshot.jar $(CURDIR)/debian/freenet-daemon/usr/share/java
 	install -m 644 $(CURDIR)/fred-@RELEASE@/lib/freenet-ext.jar $(CURDIR)/debian/freenet-daemon/usr/lib/java
 
 clean::
-	rm -rf $(CURDIR)/contrib-@RELEASE@/wrapper/lib
-	rm -rf $(CURDIR)/fred-@RELEASE@/generator/js/lib
-
-#	cd $(CURDIR)/contrib-@RELEASE@/freenet_ext && ant clean
-#	cd $(CURDIR)/fred-@RELEASE@/ && ant distclean
+	cd $(CURDIR)/fred-@RELEASE@/ && ant clean-all
