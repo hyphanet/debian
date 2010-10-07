@@ -2,16 +2,18 @@
 
 FREENET_VERSION_RELEASED=0.7.5
 
-USAGE="Usage: $0 [-s|-u|-h] [--] [BRANCH]"
+USAGE="Usage: $0 [-c|-u|-o|-S|-h] [--] [BRANCH]"
+BOPT_CLEAN_ONLY=false
+BOPT_UPDATE=false
 BOPT_ORIG_ONLY=false
 BOPT_DPKG=""
-BOPT_UPDATE=false
 
-while getopts oSuh o; do
+while getopts cuoSh o; do
 	case $o in
+	c ) BOPT_CLEAN_ONLY=true;;
+	u ) BOPT_UPDATE=true;;
 	o ) BOPT_ORIG_ONLY=true;;
 	S ) BOPT_DPKG="$BOPT_DPKG -S";;
-	u ) BOPT_UPDATE=true;;
 	h )
 		cat <<-EOF
 		$USAGE
@@ -20,6 +22,7 @@ while getopts oSuh o; do
 		debian package.
 
 		  -h            This help text.
+		  -c            Clean previous build products only.
 		  -o            Only build original source tarball, no debian packages.
 		  -S            Build debian source packages, but no binaries.
 		  -u            Update (git-pull) repositories before building.
@@ -55,19 +58,20 @@ log 0 "packages will be saved to $DIST_DIR/"
 #PS4="\[\033[01;34m\]\w\[\033[00m\]\$ "
 #set -x
 
-if $BOPT_UPDATE; then
-	log 1 "updating repos..."
-	cd fred-${FREENET_BRANCH} && git pull origin && cd ..
-	cd contrib-${FREENET_BRANCH} && git pull origin && cd ..
-fi
-
 log 1 "cleaning previous build products..."
 rm -rf "$BUILD_DIR"
 rm -rf "$DIST_DIR"
 rm -f *.orig.tar.bz2 *.tmpl.tar.gz
 rm -f *.changes *.deb *.dsc *.debian.tar.gz
+if $BOPT_CLEAN_ONLY; then exit; fi
 mkdir "$BUILD_DIR" || exit 1
 mkdir "$DIST_DIR" || exit 1
+
+if $BOPT_UPDATE; then
+	log 1 "updating repos..."
+	cd fred-${FREENET_BRANCH} && git pull origin && cd ..
+	cd contrib-${FREENET_BRANCH} && git pull origin && cd ..
+fi
 
 log 1 "copying and editing source files..."
 cp -aH fred-${FREENET_BRANCH} contrib-${FREENET_BRANCH} "$BUILD_DIR" || exit 1
