@@ -9,16 +9,12 @@ changed in future revisions. To keep things simple, for now we make no effort
 to do automatic file migrations, which means your node may lose its settings
 and user data after an upgrade.
 
-So, either use this package as a test node ONLY, or follow the changes on git
-so you can move your data appropriately before an upgrade.
-
-http://github.com/freenet/debian-staging/
+See README.update for the information on the latest state of the package.
 
 
 o How to build freenet-daemon(fred)
 
-First, you need to clone fred-staging and contrib-staging from
-Freenet GitHub repos. 
+First, clone fred-staging and contrib-staging from Freenet GitHub repos. 
 
 Then put things in a directory as following:
 
@@ -26,10 +22,15 @@ Then put things in a directory as following:
 |-- 00update-fred.sh
 |-- contrib-staging
 |-- debian
-`-- contrib-staging
+`-- fred-staging
 
-Now you can run the build script, `./00update-fred.sh staging`.
+Now you can run the build script, `./00update-fred.sh staging`. Built packages
+will be put into a directory called freenet-daemon-staging-dist.
 
-You might need to install needed Build-Dep packages.  Check the Build-Depends line in debian/control or follow error messages.  Built packages will be put into a directory called freenet-daemon-official-dist.
+You might need to install some dependencies for the build to succeed. Check the
+Build-Depends line in debian/control, or follow the error messages.
 
+You can also use "official" instead of staging in the steps above, but this is
+less likely to work, since we're currently making frequent changes to freenet's
+source code infrastructure, so that this package can be tidier.
 
