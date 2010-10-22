@@ -7,7 +7,7 @@ include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 
 build/freenet-daemon::
 	# Build freenet.jar, freenet-ext.jar, and generate GWT javascript
-	cd $(CURDIR)/fred-@RELEASE@ && ant -Dgit.revision=@REVISION@ -Dtest.skip=true -Dsuppress.gjs=false -Dsuppress.ext=false dist
+	cd $(CURDIR)/fred-@RELEASE@ && ant -Dgit.revision=@REVISION@ -Dtest.skip=true -Dsuppress.gjs=false -Dsuppress.ext=false package
 
 install/freenet-daemon::
 	install -m 644 $(CURDIR)/fred-@RELEASE@/lib/freenet-cvs-snapshot.jar $(CURDIR)/debian/freenet-daemon/usr/share/java
