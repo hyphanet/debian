@@ -1,4 +1,7 @@
 This file is for updates that change very frequently, on a per-commit basis.
 
+2010-11-01: freenet-daemon build using 00update-fred.sh only works with 
+fred-staging/build-scripts and contrib-staging/strip-modules
+
 2010-10-08: freenet-daemon build using 00update-fred.sh only works with the
 build-scripts branch in fred-staging.

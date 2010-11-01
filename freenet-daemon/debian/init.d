@@ -149,15 +149,21 @@ start_server() {
         chown $DAEMONUSER:$DAEMONUSER $PIDDIR
         chmod 750 $PIDDIR
 
+        # construct the CLASSPATH
+        JARDIR=/usr/share/java
+        CLASSPATH=.
+        for lib in freenet wrapper db-je db4o commons-compress lzmajio mantissa; do CLASSPATH=$CLASSPATH:$JARDIR/$lib.jar; done
+        CLASSPATH=$CLASSPATH:/usr/lib/java/freenet-ext.jar
+
         if [ -z "$DAEMONUSER" ] ; then
-            start_daemon -p $PIDFILE $DAEMON $DAEMON_OPTS $DAEMON_ARGS
+            start_daemon -p $PIDFILE $DAEMON $DAEMON_OPTS
             errcode=$?
         else
 # if we are using a daemonuser then change the user id
             start-stop-daemon --start --quiet --background --nicelevel $NICE \
                         --make-pidfile --pidfile $PIDFILE \
                         --chuid $DAEMONUSER --chdir $WORKDIR \
-                        --exec $DAEMON -- $DAEMON_OPTS -classpath /usr/lib/java/freenet-ext.jar:/usr/share/java/freenet-cvs-snapshot.jar freenet.node.NodeStarter /etc/freenet/freenet.ini
+                        --exec $DAEMON -- $DAEMON_OPTS -classpath $CLASSPATH freenet.node.NodeStarter /etc/freenet/freenet.ini
             errcode=$?
         fi
         return $errcode

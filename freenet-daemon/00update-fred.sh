@@ -46,6 +46,7 @@ if ! [ -d fred-${FREENET_BRANCH} ]; then echo "not a directory: fred-${FREENET_B
 if ! [ -d contrib-${FREENET_BRANCH} ]; then echo "not a directory: contrib-${FREENET_BRANCH}"; echo "$USAGE"; exit 1; fi
 
 GIT_DESCRIBED="$(cd fred-${FREENET_BRANCH} && git describe --always --abbrev=4 && cd ..)"
+GIT_DESCRIBED_EXT="$(cd contrib-${FREENET_BRANCH} && git describe --always --abbrev=4 && cd ..)"
 DEB_VERSION=${FREENET_VERSION_RELEASED}+${GIT_DESCRIBED}
 DEB_REVISION="$(dpkg-parsechangelog | grep Version | cut -d- -f2)"
 
@@ -100,8 +101,9 @@ cd "$BUILD_DIR"/debian
 rm -rf seednodes.fref && wget -q -O seednodes.fref http://downloads.freenetproject.org/alpha/opennet/seednodes.fref
 # substitute variables
 ls -1 copyright freenet-daemon.docs rules | xargs sed -i \
-	-e 's/@RELEASE@/'${FREENET_BRANCH}'/g' \
-	-e 's/@REVISION@/'${GIT_DESCRIBED}'/g'
+	-e 's/@REVISION@/'${GIT_DESCRIBED}'/g' \
+	-e 's/@EXTREVISION@/'${GIT_DESCRIBED_EXT}'/g' \
+	-e 's/@RELEASE@/'${FREENET_BRANCH}'/g'
 cd ../..
 
 if $BOPT_ORIG_ONLY; then exit; fi
