@@ -1,10 +1,9 @@
 - freenet is still under development so it is VITAL that
   we get start-stop-daemon to log the stdout/stderr of java.
 
-- build freenet-ext properly; atm it just downloads it
-
-- split freenet-ext up properly
-  - first thing is to split arch-dependent JNI libs out of the jar
+- split freenet-ext up better
+  - package the external libs properly so that we can get rid of the ant-contrib dependency
+  - split arch-dependent JNI libs out of JAR files
 
 /var/run/freenet maybe needs to be moved.
 program directories need to be put in a new section in the freenet config.

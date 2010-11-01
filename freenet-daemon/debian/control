@@ -2,14 +2,14 @@ Source: freenet-daemon
 Section: net
 Priority: extra
 Maintainer: Masayuki Hatta (mhatta) <mhatta@debian.org>
-Build-Depends: cdbs, debhelper (>= 7), adduser (>= 3.11), ant, ant-optional, git-core, jflex, junit4, libcommons-collections3-java, libecj-java, libgwt-dev-java, quilt, openjdk-6-jdk | java6-sdk
+Build-Depends: cdbs, debhelper (>= 7), adduser (>= 3.11), ant, ant-optional, ant-contrib, git-core, jflex, junit4, libcommons-collections3-java, libcommons-compress-java, libdb-je-java, libecj-java, libgwt-dev-java, quilt, openjdk-6-jdk | java6-sdk
 Standards-Version: 3.9.1
 Homepage: http://freenetproject.org/
 Tag: interface::daemon, network::server
 
 Package: freenet-daemon
 Architecture: any
-Depends: adduser, openjdk-6-jre | java-runtime, ${shlibs:Depends}, ${misc:Depends}
+Depends: adduser, openjdk-6-jre | java-runtime, ${shlibs:Depends}, ${misc:Depends}, libcommons-compress-java, libdb-je-java
 Replaces: fred
 Conflicts: fred
 Description: Freenet REference Daemon
