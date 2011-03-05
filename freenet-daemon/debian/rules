@@ -11,7 +11,6 @@ build/freenet-daemon::
 
 install/freenet-daemon::
 	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java \
-	  $(CURDIR)/contrib-@RELEASE@/freenet-ext/dist/wrapper.jar \
 	  $(CURDIR)/contrib-@RELEASE@/freenet-ext/dist/db4o.jar \
 	  $(CURDIR)/contrib-@RELEASE@/freenet-ext/dist/lzmajio.jar \
 	  $(CURDIR)/contrib-@RELEASE@/freenet-ext/dist/mantissa.jar \

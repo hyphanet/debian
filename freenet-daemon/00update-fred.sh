@@ -84,8 +84,6 @@ for path in fred-${FREENET_BRANCH} contrib-${FREENET_BRANCH}; do
 	find . -name .git -o -name .gitignore -o -name .cvsignore | xargs rm -rf
 	cd ..
 done
-# point fred to contrib
-echo "contrib.dir=../contrib-${FREENET_BRANCH}/freenet_ext" >> fred-${FREENET_BRANCH}/build.properties
 cd ..
 
 log 1 "making original source archives..."

@@ -1,7 +1,8 @@
-- freenet is still under development so it is VITAL that
-  we get start-stop-daemon to log the stdout/stderr of java.
+- use service-wrapper-java for the freenet-daemon service
+- but have a /usr/bin/freenet so users can run freenet "directly" from the jar
 
 - split freenet-ext up better
+  - probably put the bundled libs in /usr/share/java/freenet rather than /usr/share/java
   - package the external libs properly so that we can get rid of the ant-contrib dependency
   - split arch-dependent JNI libs out of JAR files
 
