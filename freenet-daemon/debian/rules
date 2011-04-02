@@ -3,20 +3,26 @@
 include /usr/share/cdbs/1/rules/debhelper.mk
 include /usr/share/cdbs/1/rules/patchsys-quilt.mk
 
-# Add here any variable or target overrides you need.
+include /usr/share/javahelper/java-vars.mk
+include /usr/share/cdbs/1/class/javahelper.mk
+# not much help atm, since we need to use ant twice in the same package
+#include /usr/share/cdbs/1/class/ant.mk
+
+PACKAGE              := $(DEB_SOURCE_PACKAGE)
+VERSION              := $(DEB_UPSTREAM_VERSION)
+JAVA_HOME            := /usr/lib/jvm/default-java
 
 build/freenet-daemon::
 	cd $(CURDIR)/contrib-@RELEASE@/freenet-ext/ && ant -propertyfile $(CURDIR)/debian/contrib.override.properties -Dgit.revision=@EXTREVISION@ package
-	cd $(CURDIR)/fred-@RELEASE@/ && ant -f build-clean.xml -Dcontrib.dir=../contrib-@RELEASE@/freenet-ext -Dtest.skip=true -Dgit.revision=@REVISION@ package
+	cd $(CURDIR)/fred-@RELEASE@/ && ant -f build-clean.xml -Dcontrib.dir=../contrib-@RELEASE@/freenet-ext -Dgit.revision=@REVISION@ package
 
 install/freenet-daemon::
 	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java \
-	  $(CURDIR)/contrib-@RELEASE@/freenet-ext/dist/db4o.jar \
-	  $(CURDIR)/contrib-@RELEASE@/freenet-ext/dist/lzmajio.jar \
-	  $(CURDIR)/contrib-@RELEASE@/freenet-ext/dist/mantissa.jar \
 	  $(CURDIR)/fred-@RELEASE@/dist/freenet.jar
-	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/lib/java \
-	  $(CURDIR)/contrib-@RELEASE@/freenet-ext/dist/freenet-ext.jar
+	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java/freenet \
+	  $(CURDIR)/contrib-@RELEASE@/freenet-ext/dist/*.jar
+	#install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/lib/java/freenet \
+	#  $(CURDIR)/contrib-@RELEASE@/freenet-ext/dist/freenet-ext_native.jar
 
 clean::
 	cd $(CURDIR)/fred-@RELEASE@/ && ant -f build-clean.xml clean-all

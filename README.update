@@ -1,5 +1,8 @@
 This file is for updates that change very frequently, on a per-commit basis.
 
+2011-04-02: freenet-daemon build using 00update-fred.sh only works with
+fred-staging/deprecate-ext-legacy-27 and contrib-staging/master
+
 2011-03-05: as the below note; however since fred/HEAD has moved on, you'll
 need to cherry-pick some edits from fred-staging/build-scripts in order to
 get a version that can connect to the latest network.

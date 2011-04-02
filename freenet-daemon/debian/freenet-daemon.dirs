@@ -1,5 +1,6 @@
-usr/lib/java
+usr/lib/java/freenet
 usr/share/java
+usr/share/java/freenet
 usr/share/freenet
 var/lib/freenet
 var/log/freenet

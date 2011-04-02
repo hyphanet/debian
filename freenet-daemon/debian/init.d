@@ -26,18 +26,18 @@
 ### BEGIN INIT INFO
 # Provides:          freenet-daemon
 # Required-Start:    $network $local_fs $remote_fs
-# Required-Stop:     $remote_fs	
+# Required-Stop:     $remote_fs
 # Should-Start:      $named
 # Should-Stop:
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: Freenet REference Daemon
-# Description:       Freenet is free software which lets you anonymously 
-#                    share files, browse and publish "freesites" (web sites 
-#                    accessible only through Freenet) and chat on forums, 
-#                    without fear of censorship. Freenet is decentralised to 
-#                    make it less vulnerable to attack, and if used in 
-#                    "darknet" mode, where users only connect to their 
+# Description:       Freenet is free software which lets you anonymously
+#                    share files, browse and publish "freesites" (web sites
+#                    accessible only through Freenet) and chat on forums,
+#                    without fear of censorship. Freenet is decentralised to
+#                    make it less vulnerable to attack, and if used in
+#                    "darknet" mode, where users only connect to their
 #                    friends, is very difficult to detect.
 ### END INIT INFO
 
@@ -149,12 +149,6 @@ start_server() {
         chown $DAEMONUSER:$DAEMONUSER $PIDDIR
         chmod 750 $PIDDIR
 
-        # construct the CLASSPATH
-        JARDIR=/usr/share/java
-        CLASSPATH=.
-        for lib in freenet wrapper db-je db4o commons-compress lzmajio mantissa; do CLASSPATH=$CLASSPATH:$JARDIR/$lib.jar; done
-        CLASSPATH=$CLASSPATH:/usr/lib/java/freenet-ext.jar
-
         if [ -z "$DAEMONUSER" ] ; then
             start_daemon -p $PIDFILE $DAEMON $DAEMON_OPTS
             errcode=$?
@@ -163,7 +157,7 @@ start_server() {
             start-stop-daemon --start --quiet --background --nicelevel $NICE \
                         --make-pidfile --pidfile $PIDFILE \
                         --chuid $DAEMONUSER --chdir $WORKDIR \
-                        --exec $DAEMON -- $DAEMON_OPTS -classpath $CLASSPATH freenet.node.NodeStarter /etc/freenet/freenet.ini
+                        --exec $DAEMON -- $DAEMON_OPTS -jar /usr/share/java/freenet.jar /etc/freenet/freenet.ini
             errcode=$?
         fi
         return $errcode
@@ -178,7 +172,7 @@ stop_server() {
 # if we are using a daemonuser then look for process that match
             start-stop-daemon --stop --retry 5 --quiet --pidfile $PIDFILE \
                         --user $DAEMONUSER
-	    rm -f $PIDFILE 
+        rm -f $PIDFILE
             errcode=$?
         fi
 
@@ -226,7 +220,7 @@ case "$1" in
             # NOTE: Some servers might die some time after they start,
             # this code will detect this issue if STARTTIME is set
             # to a reasonable value
-            [ -n "$STARTTIME" ] && sleep $STARTTIME # Wait some time 
+            [ -n "$STARTTIME" ] && sleep $STARTTIME # Wait some time
             if  running ;  then
                 # It's ok, the server started and is running
                 log_end_msg 0

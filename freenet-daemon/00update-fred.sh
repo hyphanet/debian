@@ -75,6 +75,7 @@ if $BOPT_UPDATE; then
 fi
 
 log 1 "copying and editing source files..."
+log 1 "- note that this step will be *much* quicker if you \`git clean\` and \`ant clean-all\` beforehand"
 cp -aH fred-${FREENET_BRANCH} contrib-${FREENET_BRANCH} "$BUILD_DIR" || exit 1
 cd "$BUILD_DIR"
 # remove cruft
