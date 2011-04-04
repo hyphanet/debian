@@ -1,5 +1,6 @@
 #!/bin/sh
 
+PACKAGE=freenet-daemon
 FREENET_VERSION_RELEASED=0.7.5
 
 USAGE="Usage: $0 [-c|-u|-o|-S|-h] [--] [BRANCH]"
@@ -42,13 +43,15 @@ log() {
 
 FREENET_BRANCH="$1"
 if [ -z "$FREENET_BRANCH" ]; then FREENET_BRANCH=official; fi
-if ! [ -d fred-${FREENET_BRANCH} ]; then echo "not a directory: fred-${FREENET_BRANCH}"; echo "$USAGE"; exit 1; fi
-if ! [ -d contrib-${FREENET_BRANCH} ]; then echo "not a directory: contrib-${FREENET_BRANCH}"; echo "$USAGE"; exit 1; fi
+REPO_FRED=${PACKAGE}/fred-${FREENET_BRANCH}
+REPO_EXT=${PACKAGE}/contrib-${FREENET_BRANCH}
+if ! [ -d ${REPO_FRED} ]; then echo "not a directory: ${REPO_FRED}"; echo "$USAGE"; exit 1; fi
+if ! [ -d ${REPO_EXT} ]; then echo "not a directory: ${REPO_EXT}"; echo "$USAGE"; exit 1; fi
 
-GIT_DESCRIBED="$(cd fred-${FREENET_BRANCH} && git describe --always --abbrev=4 && cd ..)"
-GIT_DESCRIBED_EXT="$(cd contrib-${FREENET_BRANCH} && git describe --always --abbrev=4 && cd ..)"
+GIT_DESCRIBED="$(cd ${REPO_FRED} && git describe --always --abbrev=4 && cd ..)"
+GIT_DESCRIBED_EXT="$(cd ${REPO_EXT} && git describe --always --abbrev=4 && cd ..)"
 DEB_VERSION=${FREENET_VERSION_RELEASED}+${GIT_DESCRIBED}
-DEB_REVISION="$(dpkg-parsechangelog | grep Version | cut -d- -f2)"
+DEB_REVISION="$(cd ${PACKAGE} && dpkg-parsechangelog | grep Version | cut -d- -f2)"
 
 BUILD_DIR="freenet-daemon-${DEB_VERSION}"
 DIST_DIR="freenet-daemon-${FREENET_BRANCH}-dist"
@@ -70,13 +73,13 @@ mkdir "$DIST_DIR" || exit 1
 
 if $BOPT_UPDATE; then
 	log 1 "updating repos..."
-	cd fred-${FREENET_BRANCH} && git pull origin && cd ..
-	cd contrib-${FREENET_BRANCH} && git pull origin && cd ..
+	cd ${REPO_FRED} && git pull origin && cd ..
+	cd ${REPO_EXT} && git pull origin && cd ..
 fi
 
 log 1 "copying and editing source files..."
 log 1 "- note that this step will be *much* quicker if you \`git clean\` and \`ant clean-all\` beforehand"
-cp -aH fred-${FREENET_BRANCH} contrib-${FREENET_BRANCH} "$BUILD_DIR" || exit 1
+cp -aH ${REPO_FRED} ${REPO_EXT} "$BUILD_DIR" || exit 1
 cd "$BUILD_DIR"
 # remove cruft
 for path in fred-${FREENET_BRANCH} contrib-${FREENET_BRANCH}; do
@@ -88,21 +91,21 @@ done
 cd ..
 
 log 1 "making original source archives..."
-tar cfj freenet-daemon_${DEB_VERSION}.orig.tar.bz2 "$BUILD_DIR"
-cp freenet-daemon_${DEB_VERSION}.orig.tar.bz2 "$DIST_DIR"
-tar cfz debian.freenet-daemon.tmpl.tar.gz debian
-cp debian.freenet-daemon.tmpl.tar.gz "$DIST_DIR"
+tar cfj freenet-daemon_${DEB_VERSION}.orig.tar.bz2 "$BUILD_DIR" || exit 1
+cp freenet-daemon_${DEB_VERSION}.orig.tar.bz2 "$DIST_DIR" || exit 1
+tar cfz debian.freenet-daemon.tmpl.tar.gz ${PACKAGE}/debian || exit 1
+cp debian.freenet-daemon.tmpl.tar.gz "$DIST_DIR" || exit 1
 
 log 1 "copying and editing debian packaging files..."
-cp -a debian "$BUILD_DIR"/debian
+cp -a ${PACKAGE}/debian "$BUILD_DIR"/debian || exit 1
 cd "$BUILD_DIR"/debian
 # update seednodes
-rm -rf seednodes.fref && wget -q -O seednodes.fref http://downloads.freenetproject.org/alpha/opennet/seednodes.fref
+rm -rf seednodes.fref && wget -q -O seednodes.fref http://downloads.freenetproject.org/alpha/opennet/seednodes.fref || exit 1
 # substitute variables
 ls -1 copyright freenet-daemon.docs rules | xargs sed -i \
 	-e 's/@REVISION@/'${GIT_DESCRIBED}'/g' \
 	-e 's/@EXTREVISION@/'${GIT_DESCRIBED_EXT}'/g' \
-	-e 's/@RELEASE@/'${FREENET_BRANCH}'/g'
+	-e 's/@RELEASE@/'${FREENET_BRANCH}'/g' || exit 1
 cd ../..
 
 if $BOPT_ORIG_ONLY; then exit; fi

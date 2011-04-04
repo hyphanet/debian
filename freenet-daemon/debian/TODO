@@ -1,0 +1,8 @@
+- have a /usr/bin/freenet so users can run freenet "directly" from the jar
+- currently, tests are run twice
+- split arch-dependent JNI libs out of JAR files
+
+- /var/run/freenet maybe needs to be moved.
+- package the external libs properly so that we can get rid of the ant-contrib dependency
+
+- fred: program directories need to be put in a new section in the freenet config.
