@@ -1,0 +1,15 @@
+# do we want to run at all?
+
+if [ "$RUN" != "yes" ]; then echo >&2 "RUN is not yes; abort"; exit 1; fi
+
+# set PRIORITY from /etc/default
+
+if [ -n "$NICE" ]; then PRIORITY="$NICE"; fi
+
+# copy default config files, if necessary
+
+ensure_exists() { if [ ! -f "$1" ]; then cp "$2" "$1"; fi; }
+
+ensure_exists /etc/freenet/wrapper.conf  /usr/share/freenet/wrapper.conf
+ensure_exists /etc/freenet/freenet.ini  /usr/share/freenet/freenet.ini
+ensure_exists /etc/freenet/noderef/seednodes.fref /usr/share/freenet/seednodes.fref

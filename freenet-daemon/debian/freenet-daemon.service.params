@@ -1,0 +1,7 @@
+freenet-daemon
+Freenet 0.7 (experimental release)
+Freenet reference daemon
+WRAPPER_CONF /etc/freenet/wrapper.conf
+PRIORITY 10
+RUN_AS_USER freenet
+PIDDIR /var/run/freenet

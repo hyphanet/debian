@@ -11,16 +11,29 @@ include /usr/share/cdbs/1/class/javahelper.mk
 PACKAGE              := $(DEB_SOURCE_PACKAGE)
 VERSION              := $(DEB_UPSTREAM_VERSION)
 JAVA_HOME            := /usr/lib/jvm/default-java
+WRAPPER_SERVICE      := usr/share/freenet/service-wrapper.sh
 
 build/freenet-daemon::
-	cd $(CURDIR)/contrib-@RELEASE@/freenet-ext/ && ant -propertyfile $(CURDIR)/debian/contrib.override.properties -Dgit.revision=@EXTREVISION@ package
-	cd $(CURDIR)/fred-@RELEASE@/ && ant -f build-clean.xml -Dcontrib.dir=../contrib-@RELEASE@/freenet-ext -Dgit.revision=@REVISION@ package
+	cd $(CURDIR)/contrib-@RELEASE@/freenet-ext/ && \
+	  ant -Dextlib.wrapper.suppress=false -propertyfile $(CURDIR)/debian/contrib.override.properties prepare-libsrc
+	cd $(CURDIR)/contrib-@RELEASE@/wrapper/ && \
+	  $(CURDIR)/debian/build-wrapper-sh.sh /$(WRAPPER_SERVICE) /usr/sbin/wrapper
+	cd $(CURDIR)/contrib-@RELEASE@/wrapper/ && \
+	  $(CURDIR)/debian/customise-wrapper-sh.sh $(CURDIR)/debian/freenet-daemon.service.params $(CURDIR)/debian/freenet-daemon.service.preinit
+	cd $(CURDIR)/contrib-@RELEASE@/freenet-ext/ && \
+	  ant -propertyfile $(CURDIR)/debian/contrib.override.properties -Dgit.revision=@EXTREVISION@ package
+	cd $(CURDIR)/fred-@RELEASE@/ && \
+	  ant -f build-clean.xml -Dcontrib.dir=../contrib-@RELEASE@/freenet-ext -Dgit.revision=@REVISION@ package
 
 install/freenet-daemon::
-	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java \
-	  $(CURDIR)/fred-@RELEASE@/dist/freenet.jar
+	install -m 755 $(CURDIR)/contrib-@RELEASE@/wrapper/init.d \
+	  $(CURDIR)/debian/freenet-daemon.init
+	install -m 644 $(CURDIR)/contrib-@RELEASE@/wrapper/service-wrapper.sh \
+	  $(CURDIR)/debian/freenet-daemon/$(WRAPPER_SERVICE)
 	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java/freenet \
 	  $(CURDIR)/contrib-@RELEASE@/freenet-ext/dist/*.jar
+	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java \
+	  $(CURDIR)/fred-@RELEASE@/dist/freenet.jar
 	#install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/lib/java/freenet \
 	#  $(CURDIR)/contrib-@RELEASE@/freenet-ext/dist/freenet-ext_native.jar
 
@@ -28,3 +41,4 @@ clean::
 	cd $(CURDIR)/fred-@RELEASE@/ && ant -f build-clean.xml clean-all
 	cd $(CURDIR)/contrib-@RELEASE@/freenet-ext/ && ant clean-all
 	# rm -rf $(CURDIR)/contrib-@RELEASE@/freenet-ext/lib/ && mkdir $(CURDIR)/contrib-@RELEASE@/freenet-ext/lib/
+

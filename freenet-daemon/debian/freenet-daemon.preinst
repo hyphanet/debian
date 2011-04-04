@@ -45,6 +45,7 @@ case "$1" in
            echo -n "Adding system user $SERVER_USER.."
            adduser --quiet \
                --system \
+               --shell /bin/sh \
                --ingroup $SERVER_GROUP \
                --no-create-home \
                --disabled-password \
