@@ -6,3 +6,4 @@
 - package the external libs properly so that we can get rid of the ant-contrib dependency
 
 - fred: program directories need to be put in a new section in the freenet config.
+- split wrapper.conf up

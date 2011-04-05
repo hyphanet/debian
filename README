@@ -14,23 +14,8 @@ See README.update for the information on the latest state of the package.
 
 o How to build freenet-daemon(fred)
 
-First, clone fred-staging and contrib-staging from Freenet GitHub repos. 
-
-Then put things in a directory as following:
-
-.
-|-- 00update-fred.sh
-|-- contrib-staging
-|-- debian
-`-- fred-staging
-
-Now you can run the build script, `./00update-fred.sh staging`. Built packages
-will be put into a directory called freenet-daemon-staging-dist.
+Run the build script, `./build-freenet-daemon`. Built packages will be put into
+a directory called freenet-daemon-staging-dist.
 
 You might need to install some dependencies for the build to succeed. Check the
 Build-Depends line in debian/control, or follow the error messages.
-
-You can also use "official" instead of staging in the steps above, but this is
-less likely to work, since we're currently making frequent changes to freenet's
-source code infrastructure, so that this package can be tidier.
-
