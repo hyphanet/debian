@@ -1,5 +1,19 @@
-/debian.freenet-daemon.tmpl.tar.gz
-/freenet-daemon-*
+# binaries
 /freenet-daemon_*
+/Packages.gz
+/Sources.gz
+
+# upstream
 /freenet-daemon/fred-*
 /freenet-daemon/contrib-*
+
+# standard debian ignores
+/freenet-daemon/debian/files
+/freenet-daemon/debian/*.debhelper.log
+/freenet-daemon/debian/*.debhelper
+/freenet-daemon/debian/*.substvars
+/freenet-daemon/debian/*stamp*
+/freenet-daemon/debian/freenet-daemon/
+
+# custom debian ignores
+/freenet-daemon/debian/freenet-daemon.init

@@ -1,4 +1,5 @@
 - have a /usr/bin/freenet so users can run freenet "directly" from the jar
+- use debuild to build source packages rather than our own custom code
 - currently, tests are run twice
 - split arch-dependent JNI libs out of JAR files
 

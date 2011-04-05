@@ -49,22 +49,17 @@ GIT_DESCRIBED_EXT="$(cd ${REPO_EXT} && git describe --always --abbrev=4)"
 DEB_VERSION=${FREENET_VERSION_RELEASED}+${GIT_DESCRIBED}
 DEB_REVISION="$(cd ${PACKAGE} && dpkg-parsechangelog | grep Version | grep -o '\-[^-]*$' | tail -c+2)"
 
-DIST_DIR="freenet-daemon-dist"
-
-log 0 "building freenet-daemon; packages will be saved to $DIST_DIR/"
+log 0 "build ${PACKAGE}"
 
 #PS4="\[\033[01;34m\]\w\[\033[00m\]\$ "
 #set -x
 
-log 1 "cleaning previous build products..."
-rm -rf "$DIST_DIR"
-rm -f *.orig.tar.bz2 *.tmpl.tar.gz
-rm -f *.changes *.deb *.dsc *.debian.tar.gz
+log 1 "clean previous build products..."
+rm -f ${PACKAGE}_* Packages.gz Sources.gz
 if $BOPT_CLEAN_ONLY; then exit; fi
-mkdir "$DIST_DIR" || exit 1
 
 if $BOPT_UPDATE; then
-	log 1 "updating repos..."
+	log 1 "update sources..."
 	cd ${REPO_FRED} && git pull origin && cd -
 	cd ${REPO_EXT} && git pull origin && cd -
 	# update seednodes
@@ -77,23 +72,23 @@ if $BOPT_UPDATE; then
 	cd -
 fi
 
-log 1 "updating submodules..."
+log 1 "update submodules..."
 git submodule update || exit 1
 
-log 1 "cleaning source repos..."
+log 1 "clean source repos..."
 for path in ${REPO_FRED} ${REPO_EXT}; do
 	cd "$path" && git reset --hard HEAD && git clean -fdx && cd - || exit 1
 done
 
-log 1 "making original source archives..."
-tar --exclude-vcs -cjf freenet-daemon_${DEB_VERSION}.orig.tar.bz2 ${PACKAGE} || exit 1
-cp freenet-daemon_${DEB_VERSION}.orig.tar.bz2 "$DIST_DIR" || exit 1
-tar --exclude-vcs -czf debian.freenet-daemon.tmpl.tar.gz ${PACKAGE}/debian || exit 1
-cp debian.freenet-daemon.tmpl.tar.gz "$DIST_DIR" || exit 1
+log 1 "build source archives..."
+tar -cj --exclude-vcs --exclude=${PACKAGE}/debian \
+  -f ${PACKAGE}_${DEB_VERSION}.orig.tar.bz2 ${PACKAGE} || exit 1
+tar -cz --exclude-vcs \
+  -f ${PACKAGE}_${DEB_VERSION}.debian.tar.gz ${PACKAGE}/debian || exit 1
 
 if $BOPT_ORIG_ONLY; then exit; fi
 
-log 1 "building debian packages..."
+log 1 "build debian binary packages..."
 cd ${PACKAGE}
 if $DEV_BUILD; then
 	CHLOG=debian/changelog
@@ -106,11 +101,7 @@ fi
 dpkg-buildpackage -rfakeroot $BOPT_DPKG || exit 1
 cd ..
 
-log 1 "saving built packages..."
-mv *.changes *.deb *.dsc *.debian.tar.gz "$DIST_DIR"
-cd "$DIST_DIR"
 dpkg-scanpackages . /dev/null > Packages
 gzip -9 Packages
 dpkg-scansources . /dev/null > Sources
 gzip -9 Sources
-cd ..
