@@ -49,6 +49,8 @@ GIT_DESCRIBED_EXT="$(cd ${REPO_EXT} && git describe --always --abbrev=4)"
 DEB_VERSION=${FREENET_VERSION_RELEASED}+${GIT_DESCRIBED}
 DEB_REVISION="$(cd ${PACKAGE} && dpkg-parsechangelog | grep Version | grep -o '\-[^-]*$' | tail -c+2)"
 
+set -o errexit
+
 log 0 "build ${PACKAGE}"
 
 #PS4="\[\033[01;34m\]\w\[\033[00m\]\$ "
@@ -65,43 +67,41 @@ if $BOPT_UPDATE; then
 	# update seednodes
 	cd ${PACKAGE}/debian
 	# FIXME: upstream bug prevents this from working for the moment
-	#wget -N https://downloads.freenetproject.org/alpha/opennet/seednodes.fref.gpg || exit 1
-	wget -N http://downloads.freenetproject.org/alpha/opennet/seednodes.fref.gpg || exit 1
-	gpg --output seednodes.fref --decrypt seednodes.fref.gpg || exit 1
+	#wget -N https://downloads.freenetproject.org/alpha/opennet/seednodes.fref.gpg
+	wget -N http://downloads.freenetproject.org/alpha/opennet/seednodes.fref.gpg
+	gpg --output seednodes.fref --decrypt seednodes.fref.gpg
 	rm -f seednodes.fref.gpg
 	cd -
 fi
 
 log 1 "update submodules..."
-git submodule update || exit 1
+git submodule update
 
 log 1 "clean source repos..."
 for path in ${REPO_FRED} ${REPO_EXT}; do
-	cd "$path" && git reset --hard HEAD && git clean -fdx && cd - || exit 1
+	cd "$path" && git reset --hard HEAD && git clean -fdx && cd -
 done
 
 log 1 "build source archives..."
 tar -cj --exclude-vcs --exclude=${PACKAGE}/debian \
-  -f ${PACKAGE}_${DEB_VERSION}.orig.tar.bz2 ${PACKAGE} || exit 1
+  -f ${PACKAGE}_${DEB_VERSION}.orig.tar.bz2 ${PACKAGE}
 tar -cz --exclude-vcs \
-  -f ${PACKAGE}_${DEB_VERSION}.debian.tar.gz ${PACKAGE}/debian || exit 1
+  -f ${PACKAGE}_${DEB_VERSION}.debian.tar.gz ${PACKAGE}/debian
 
 if $BOPT_ORIG_ONLY; then exit; fi
 
 log 1 "build debian binary packages..."
 cd ${PACKAGE}
 if $DEV_BUILD; then
-	CHLOG=debian/changelog
-	cp "$CHLOG" "$CHLOG.old" || exit 1
-	dch -v ${DEB_VERSION}-${DEB_REVISION} "GIT SNAPSHOT RELEASE! TEST PURPOSE ONLY!" || exit 1
+	CHLOG="$PWD/debian/changelog"
+	cp "$CHLOG" "$CHLOG.old"
+	dch -v ${DEB_VERSION}-${DEB_REVISION} "GIT SNAPSHOT RELEASE! TEST PURPOSE ONLY!"
 	undch() { if [ -f "$CHLOG.old" ]; then mv "$CHLOG.old" "$CHLOG"; fi }
 	trap undch EXIT INT TERM KILL
 	echo "\033[36;1m$CHLOG\033[m has been modified; \033[31;1mplease do NOT commit it to source control.\033[m It will be reverted when this command exits or is aborted."
 fi
-dpkg-buildpackage -rfakeroot $BOPT_DPKG || exit 1
+dpkg-buildpackage -rfakeroot $BOPT_DPKG
 cd ..
 
-dpkg-scanpackages . /dev/null > Packages
-gzip -9 Packages
-dpkg-scansources . /dev/null > Sources
-gzip -9 Sources
+dpkg-scanpackages . | gzip -9 > Packages.gz
+dpkg-scansources . | gzip -9 > Sources.gz
