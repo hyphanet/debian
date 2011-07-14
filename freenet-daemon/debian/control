@@ -12,7 +12,7 @@ Tag: interface::daemon, network::server
 
 Package: freenet-daemon
 Architecture: any
-Depends: adduser, default-jre-headless, service-wrapper-java,
+Depends: adduser, default-jre-headless, service-wrapper,
  ${shlibs:Depends}, ${misc:Depends}, ${java:Depends}
 Replaces: fred
 Conflicts: fred
