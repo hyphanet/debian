@@ -75,7 +75,7 @@ if $BOPT_UPDATE; then
 fi
 
 log 1 "update submodules..."
-git submodule update
+git submodule update --init
 
 log 1 "clean source repos..."
 for path in ${REPO_FRED} ${REPO_EXT}; do
