@@ -4,13 +4,14 @@ PACKAGE=freenet-daemon
 FREENET_VERSION_RELEASED=0.7.5
 DEV_BUILD=true
 
-USAGE="Usage: $0 [-c|-u|-o|-S|-h] [--]"
+BOPTS=cuoS
+USAGE="Usage: $0 [-$BOPTS] [-h] [--]"
 BOPT_CLEAN_ONLY=false
 BOPT_UPDATE=false
 BOPT_ORIG_ONLY=false
 BOPT_DPKG=""
 
-while getopts cuoSh o; do
+while getopts h$BOPTS o; do
 	case $o in
 	c ) BOPT_CLEAN_ONLY=true;;
 	u ) BOPT_UPDATE=true;;
@@ -28,12 +29,17 @@ while getopts cuoSh o; do
 		  -S            Build debian source packages, but no binaries.
 		  -u            Update (git-pull) repositories before building.
 		EOF
-		exit 1
+		exit
 		;;
-	\? ) echo $USAGE; exit 1;;
+	\? ) echo $USAGE; exit 2;;
 	esac
 done
 shift `expr $OPTIND - 1`
+
+if [ "$(dirname "$0")" != "." -o ! -d ".git" ]; then
+	echo >&2 "must be run as ./$(basename "$0") from the debian-staging git repo"
+	exit 1
+fi
 
 log() {
 	case $1 in 0 ) PREFIX="";; 1 ) PREFIX="- ";; esac
