@@ -19,3 +19,16 @@ this directory.
 
 You might need to install some dependencies for the build to succeed. Check the
 Build-Depends line in debian/control, or follow the error messages.
+
+Some of the build-dependencies (e.g. at the time of writing, service-wrapper)
+are only available in newer suites of Debian, such as experimental. To install
+these using aptitude (which will pull in their dependencies as well), add the
+suite to your /etc/apt/sources.list, then run
+
+$ aptitude -t <suite name> install service-wrapper
+
+You probably first want to add the following to your /etc/apt/apt.conf:
+
+APT::Default-Release "<your default suite, e.g testing>";
+
+to prevent aptitude from upgrading all your other packages to the newer suite.

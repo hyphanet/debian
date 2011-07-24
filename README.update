@@ -1,5 +1,8 @@
 This file is for updates that change very frequently, on a per-commit basis.
 
+2011-07-14: git submodules now point to revisions of fred and contrib known to
+result in a working (build and run) package when built using the scripts here.
+
 2011-04-02: freenet-daemon build using 00update-fred.sh only works with
 fred-staging/deprecate-ext-legacy-27 and contrib-staging/master
 
