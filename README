@@ -32,3 +32,13 @@ You probably first want to add the following to your /etc/apt/apt.conf:
 APT::Default-Release "<your default suite, e.g testing>";
 
 to prevent aptitude from upgrading all your other packages to the newer suite.
+
+
+o Known issues / quirks
+
+The build script will run the unit tests twice, since dpkg-buildpackage runs
+both the "build" and "binary" targets of debian/rules specifically, even though
+the latter already includes the former. The only way around this would be to
+change the build script - either debian/rules or fred/build-clean.xml - to
+detect if the tests have already been run, but this is hard in the former case
+and inappropriate in the latter case.
