@@ -1,5 +1,9 @@
 This file is for updates that change very frequently, on a per-commit basis.
 
+2012-08-02: some versions of gwt are affected by bug #7561 which causes the
+build to fail. make sure you apply the patch from that bug report and compile
+gwt yourself, then compile this package.
+
 2011-07-14: git submodules now point to revisions of fred and contrib known to
 result in a working (build and run) package when built using the scripts here.
 

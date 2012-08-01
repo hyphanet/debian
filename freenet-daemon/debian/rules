@@ -25,7 +25,7 @@ build/freenet-daemon::
 	cd $(CURDIR)/contrib/freenet-ext/ && \
 	  ant -propertyfile $(CURDIR)/debian/contrib.override.properties package
 	cd $(CURDIR)/fred/ && \
-	  ant -f build-clean.xml -Dcontrib.dir=../contrib/freenet-ext package
+	  ant -propertyfile $(CURDIR)/debian/freenet.override.properties -f build-clean.xml package
 
 install/freenet-daemon::
 	# wrapper service sh
