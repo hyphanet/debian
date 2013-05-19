@@ -11,14 +11,14 @@ include /usr/share/cdbs/1/class/javahelper.mk
 PACKAGE              := $(DEB_SOURCE_PACKAGE)
 VERSION              := $(DEB_UPSTREAM_VERSION)
 JAVA_HOME            := /usr/lib/jvm/default-java
-WRAPPER_SERVICE      := usr/share/freenet/service-wrapper.sh
+WRAPPER_INIT         := /usr/share/wrapper/make-wrapper-init.sh
 
 build/freenet-daemon::
 	# wrapper service sh
 	cd $(CURDIR)/contrib/freenet-ext/ && \
 	  ant -Dextlib.wrapper.suppress=false -propertyfile $(CURDIR)/debian/contrib.override.properties prepare-libsrc
 	cd $(CURDIR)/contrib/wrapper/ && \
-	  $(CURDIR)/debian/build-wrapper-sh.sh /$(WRAPPER_SERVICE) /usr/sbin/wrapper
+	  $(WRAPPER_INIT) -q < $(CURDIR)/debian/freenet-daemon.service.params > init.d
 	cd $(CURDIR)/contrib/wrapper/ && \
 	  $(CURDIR)/debian/customise-wrapper-sh.sh $(CURDIR)/debian/freenet-daemon.service.params $(CURDIR)/debian/freenet-daemon.service.preinit
 	# jar packages
@@ -31,8 +31,6 @@ install/freenet-daemon::
 	# wrapper service sh
 	install -m 755 $(CURDIR)/contrib/wrapper/init.d \
 	  $(CURDIR)/debian/freenet-daemon.init
-	install -m 644 $(CURDIR)/contrib/wrapper/service-wrapper.sh \
-	  $(CURDIR)/debian/freenet-daemon/$(WRAPPER_SERVICE)
 	# jar packages
 	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java/freenet \
 	  $(CURDIR)/contrib/freenet-ext/dist/*.jar

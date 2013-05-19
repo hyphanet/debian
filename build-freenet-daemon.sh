@@ -72,11 +72,7 @@ if $BOPT_UPDATE; then
 	cd ${REPO_EXT} && git pull origin && cd -
 	# update seednodes
 	cd ${PACKAGE}/debian
-	# FIXME: upstream bug prevents this from working for the moment
-	#wget -N https://downloads.freenetproject.org/alpha/opennet/seednodes.fref.gpg
-	wget -N http://downloads.freenetproject.org/alpha/opennet/seednodes.fref.gpg
-	gpg --output seednodes.fref --decrypt seednodes.fref.gpg
-	rm -f seednodes.fref.gpg
+	wget -N http://downloads.freenetproject.org/alpha/opennet/seednodes.fref
 	cd -
 fi
 
