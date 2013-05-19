@@ -11,27 +11,27 @@ and user data after an upgrade.
 
 See `README.update` for the information on the latest state of the package.
 
+## Building under Debian Wheezy
 
-* How to build freenet-daemon(fred)
+Install dependencies as listed under `Build-Depends` in `debian/control`:
 
-Run the build script, `./build-freenet-daemon`. Built packages will be put into
+    # apt-get install cdbs debhelper javahelper quilt adduser git-core\
+    default-jdk ant ant-optional ant-contrib jflex junit4 libcommons-collections3-java\
+    libcommons-compress-java libdb-je-java libecj-java libservice-wrapper-java\
+    service-wrapper
+
+[GWT](http://packages.debian.org/search?suite=default&section=all&arch=any&searchon=names&keywords=gwt+java) is required but is not available in the Wheezy repos, and the sid version (2.4.1) is currently outdated and [buggy](https://code.google.com/p/google-web-toolkit/issues/detail?id=7561).
+
+That leaves the Squeeze version of GWT:
+
+Add `APT::Default-Release "wheezy";` to a file (maybe something like `80default-release`) in `/etc/apt/apt.conf.d/` so that upgrades don't downgrade to Squeeze.
+Add Squeeze main repo, such as: `deb http://ftp.us.debian.org/debian/ squeeze main` to `/etc/apt/sources.list/`
+
+    apt-get update
+    apt-get -t squeeze install libgwt-user-java libgwt-dev-java
+
+Run the build script `./build-freenet-daemon`. Built packages will be put into
 this directory.
-
-You might need to install some dependencies for the build to succeed. Check the
-`Build-Depends` line in `debian/control`, or follow the error messages.
-
-Some of the build-dependencies (e.g. at the time of writing, `service-wrapper`)
-are only available in newer suites of Debian, such as `experimental`. To install
-these using `aptitude` (which will pull in their dependencies as well), add the
-suite to your `/etc/apt/sources.list`, then run
-
-    $ aptitude -t <suite name> install service-wrapper
-
-You probably first want to add the following to your `/etc/apt/apt.conf`:
-
-    APT::Default-Release "<your default suite, e.g testing>";
-
-to prevent aptitude from upgrading all your other packages to the newer suite.
 
 
 * Known issues / quirks
