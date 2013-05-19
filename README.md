@@ -1,5 +1,5 @@
 Freenet for Debian/Ubuntu
--------------------------------
+=========================
 
 This repository contains files needed to build `.deb` packages for Freenet. This
 is still in an early development stage - **USE AT YOUR OWN RISK**.
@@ -34,7 +34,7 @@ Run the build script `./build-freenet-daemon`. Built packages will be put into
 this directory.
 
 
-* Known issues / quirks
+## Known issues / quirks
 
 The build script will run the unit tests twice, since `dpkg-buildpackage` runs
 both the `build` and `binary` targets of `debian/rules` specifically, even though
