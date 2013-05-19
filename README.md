@@ -1,0 +1,44 @@
+Freenet for Debian/Ubuntu
+-------------------------------
+
+This repository contains files needed to build `.deb` packages for Freenet. This
+is still in an early development stage - **USE AT YOUR OWN RISK**.
+
+In particular, the directory structure has not yet been finalised, and may be
+changed in future revisions. To keep things simple, for now we make no effort
+to do automatic file migrations, which means your node may lose its settings
+and user data after an upgrade.
+
+See `README.update` for the information on the latest state of the package.
+
+
+* How to build freenet-daemon(fred)
+
+Run the build script, `./build-freenet-daemon`. Built packages will be put into
+this directory.
+
+You might need to install some dependencies for the build to succeed. Check the
+`Build-Depends` line in `debian/control`, or follow the error messages.
+
+Some of the build-dependencies (e.g. at the time of writing, `service-wrapper`)
+are only available in newer suites of Debian, such as `experimental`. To install
+these using `aptitude` (which will pull in their dependencies as well), add the
+suite to your `/etc/apt/sources.list`, then run
+
+    $ aptitude -t <suite name> install service-wrapper
+
+You probably first want to add the following to your `/etc/apt/apt.conf`:
+
+    APT::Default-Release "<your default suite, e.g testing>";
+
+to prevent aptitude from upgrading all your other packages to the newer suite.
+
+
+* Known issues / quirks
+
+The build script will run the unit tests twice, since `dpkg-buildpackage` runs
+both the `build` and `binary` targets of `debian/rules` specifically, even though
+the latter already includes the former. The only way around this would be to
+change the build script - either `debian/rules` or `fred/build-clean.xml` - to
+detect if the tests have already been run, but this is hard in the former case
+and inappropriate in the latter case.
