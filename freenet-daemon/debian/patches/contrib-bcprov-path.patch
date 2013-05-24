@@ -1,0 +1,14 @@
+Set contrib bcprov path to match package.
+Index: freenet-daemon/contrib/freenet_ext/build.xml
+===================================================================
+--- freenet-daemon.orig/contrib/freenet_ext/build.xml	2013-06-15 10:13:00.510103973 -0400
++++ freenet-daemon/contrib/freenet_ext/build.xml	2013-06-15 10:52:35.060251835 -0400
+@@ -161,7 +161,7 @@
+ 		<jar jarfile="${jar.location}" basedir="${build}" includes="**" update="yes" duplicate="fail" level="9">
+ 			<zipfileset src="../fec/common/lib/onion-common.jar"/>
+ 			<zipfileset src="../wrapper/lib/wrapper.jar"/>
+-			<zipfileset src="../bouncycastle/bcprov-jdk15on-147.jar"/>
++			<zipfileset src="/usr/share/java/bcprov.jar"/>
+ 			<zipgroupfileset dir="${strip-modules}/dist"/>
+ 		</jar>
+ 	</target>
