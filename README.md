@@ -20,15 +20,17 @@ Install dependencies as listed under `Build-Depends` in `debian/control`:
     libcommons-compress-java libdb-je-java libecj-java libservice-wrapper-java\
     service-wrapper
 
-[GWT](http://packages.debian.org/search?suite=default&section=all&arch=any&searchon=names&keywords=gwt+java) is required but is not available in the Wheezy repos, and the sid version (2.4.1) is currently outdated and [buggy](https://code.google.com/p/google-web-toolkit/issues/detail?id=7561).
+[GWT](http://packages.debian.org/search?suite=default&section=all&arch=any&searchon=names&keywords=gwt+java) is required but is not available in the Wheezy repos, and the sid version (2.4.1) is currently outdated and [buggy](https://code.google.com/p/google-web-toolkit/issues/detail?id=7561). Bouncy Castle 1.47 is also [required](https://emu.freenetproject.org/pipermail/devl/2012-October/036588.html), but [Wheezy](http://packages.debian.org/wheezy/libbcprov-java) (and [Jessie](http://packages.debian.org/jessie/libbcprov-java) as of this writing) have Bouncy Castle 1.44. [Sid](http://packages.debian.org/sid/libbcprov-java) has 1.48.
 
-That leaves the Squeeze version of GWT:
+That leaves the Squeeze version of GWT and the Sid version of Bouncy castle:
 
-Add `APT::Default-Release "wheezy";` to a file (maybe something like `80default-release`) in `/etc/apt/apt.conf.d/` so that upgrades don't downgrade to Squeeze.
+Add `APT::Default-Release "wheezy";` to a file (maybe something like `80default-release`) in `/etc/apt/apt.conf.d/` so that upgrades don't change releases.
 Add Squeeze main repo, such as: `deb http://ftp.us.debian.org/debian/ squeeze main` to `/etc/apt/sources.list/`
+Add Sid main repo, such as: `deb http://ftp.us.debian.org/debian/ sid main` to `/etc/apt/sources.list/`
 
     apt-get update
     apt-get -t squeeze install libgwt-user-java libgwt-dev-java
+    apt-get -t sid install libbcprov-java
 
 Run the build script `./build-freenet-daemon`. Built packages will be put into
 this directory.
