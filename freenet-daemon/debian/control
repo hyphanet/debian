@@ -6,14 +6,14 @@ Build-Depends: cdbs, debhelper (>= 7), javahelper, quilt, adduser (>= 3.11),
  git-core, default-jdk, ant, ant-optional, ant-contrib, jflex, junit4,
  libcommons-collections3-java, libcommons-compress-java, libdb-je-java,
  libecj-java, libgwt-dev-java, libgwt-user-java, libservice-wrapper-java,
- service-wrapper
+ service-wrapper, libbcprov-java (>= 1.47)
 Standards-Version: 3.9.1
 Homepage: http://freenetproject.org/
 Tag: interface::daemon, network::server
 
 Package: freenet-daemon
 Architecture: any
-Depends: adduser, default-jre-headless, service-wrapper,
+Depends: adduser, default-jre-headless, service-wrapper, libbcprov-java
  ${shlibs:Depends}, ${misc:Depends}, ${java:Depends}
 Replaces: fred
 Conflicts: fred
