@@ -81,7 +81,7 @@ git submodule update --init
 
 log 1 "clean source repos..."
 for path in ${REPO_FRED} ${REPO_EXT}; do
-	cd "$path" && git reset --hard HEAD && git clean -fdx && cd -
+	cd "$path" && git reset --hard HEAD && git clean -fd && cd -
 done
 
 log 1 "build source archives..."
