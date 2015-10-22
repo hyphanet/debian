@@ -72,12 +72,12 @@ if $BOPT_UPDATE; then
 	cd ${REPO_EXT} && git pull origin v29 && cd -
 	# update seednodes
 	wget -O ${PACKAGE}/debian/seednodes.fref http://downloads.freenetproject.org/alpha/opennet/seednodes.fref
-	wget -O ${PACKAGE}/debian/bcprov-jdk15on-152.jar http://downloads.freenetproject.org/alpha/deps/bcprov-jdk15on-152.jar
 	cd -
 fi
 
 log 1 "update submodules..."
 git submodule update --init
+wget -O ${PACKAGE}/debian/bcprov-jdk15on-152.jar http://downloads.freenetproject.org/alpha/deps/bcprov-jdk15on-152.jar
 
 log 1 "clean source repos..."
 for path in ${REPO_FRED} ${REPO_EXT}; do
