@@ -15,15 +15,15 @@ WRAPPER_INIT         := /usr/share/wrapper/make-wrapper-init.sh
 
 build/freenet-daemon::
 	# wrapper service sh
-	cd $(CURDIR)/contrib/freenet-ext/ && \
-	  ant -Dextlib.wrapper.suppress=false -propertyfile $(CURDIR)/debian/contrib.override.properties prepare-libsrc
+	cd $(CURDIR)/contrib/freenet_ext/ && \
+	  ant -propertyfile $(CURDIR)/debian/contrib.override.properties build-modules
 	cd $(CURDIR)/contrib/wrapper/ && \
 	  $(WRAPPER_INIT) -q < $(CURDIR)/debian/freenet-daemon.service.params > init.d
 	cd $(CURDIR)/contrib/wrapper/ && \
 	  $(CURDIR)/debian/customise-wrapper-sh.sh $(CURDIR)/debian/freenet-daemon.service.params $(CURDIR)/debian/freenet-daemon.service.preinit
 	# jar packages
-	cd $(CURDIR)/contrib/freenet-ext/ && \
-	  ant -propertyfile $(CURDIR)/debian/contrib.override.properties package
+	cd $(CURDIR)/contrib/freenet_ext/ && \
+	  ant -propertyfile $(CURDIR)/debian/contrib.override.properties
 	cd $(CURDIR)/fred/ && \
 	  ant -propertyfile $(CURDIR)/debian/freenet.override.properties -f build.xml package -Dtest.skip=true
 
@@ -33,16 +33,18 @@ install/freenet-daemon::
 	  $(CURDIR)/debian/freenet-daemon.init
 	# jar packages
 	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java/freenet \
-	  $(CURDIR)/contrib/freenet-ext/dist/*.jar
+	  $(CURDIR)/contrib/freenet_ext/*.jar
 	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java \
 	  $(CURDIR)/fred/dist/freenet.jar
-	#install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/lib/java/freenet \
-	#  $(CURDIR)/contrib/freenet-ext/dist/freenet-ext_native.jar
+	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/lib/java/freenet \
+	  $(CURDIR)/contrib/wrapper/lib/wrapper.jar
+	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/lib/java/freenet \
+	  $(CURDIR)/debian/bcprov-jdk15on-152.jar
 
 clean::
 	# jar packages
 	cd $(CURDIR)/fred/ && ant -f build-clean.xml clean-all
-	cd $(CURDIR)/contrib/freenet-ext/ && ant clean-all
+	cd $(CURDIR)/contrib/freenet_ext/ && ant clean-all
 	# wrapper service sh
 	rm -f $(CURDIR)/debian/freenet-daemon.init
 	# rm -rf $(CURDIR)/contrib/freenet-ext/lib/ && mkdir $(CURDIR)/contrib/freenet-ext/lib/

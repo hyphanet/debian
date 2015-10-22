@@ -1,0 +1,4 @@
+contrib/db4o/db4o.jar
+contrib/freenet-ext/dist/db4o.jar
+contrib/freenet-ext/dist/freenet-ext.jar
+debian/bcprov-jdk15on-152.jar

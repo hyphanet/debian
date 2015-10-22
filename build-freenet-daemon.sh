@@ -68,11 +68,11 @@ if $BOPT_CLEAN_ONLY; then exit; fi
 
 if $BOPT_UPDATE; then
 	log 1 "update sources..."
-	cd ${REPO_FRED} && git pull origin && cd -
-	cd ${REPO_EXT} && git pull origin && cd -
+	cd ${REPO_FRED} && git pull origin master && cd -
+	cd ${REPO_EXT} && git pull origin v29 && cd -
 	# update seednodes
-	cd ${PACKAGE}/debian
-	wget -N http://downloads.freenetproject.org/alpha/opennet/seednodes.fref
+	wget -O ${PACKAGE}/debian/seednodes.fref http://downloads.freenetproject.org/alpha/opennet/seednodes.fref
+	wget -O ${PACKAGE}/debian/bcprov-jdk15on-152.jar http://downloads.freenetproject.org/alpha/deps/bcprov-jdk15on-152.jar
 	cd -
 fi
 
@@ -81,7 +81,7 @@ git submodule update --init
 
 log 1 "clean source repos..."
 for path in ${REPO_FRED} ${REPO_EXT}; do
-	cd "$path" && git reset --hard HEAD && git clean -fd && cd -
+	cd "$path" && git reset --hard HEAD && git clean -fdx && cd -
 done
 
 log 1 "build source archives..."
@@ -102,7 +102,7 @@ if $DEV_BUILD; then
 	trap undch EXIT INT TERM KILL
 	echo "\033[36;1m$CHLOG\033[m has been modified; \033[31;1mplease do NOT commit it to source control.\033[m It will be reverted when this command exits or is aborted."
 fi
-dpkg-buildpackage -rfakeroot $BOPT_DPKG
+debuild -us -uc -rfakeroot $BOPT_DPKG
 cd ..
 
 dpkg-scanpackages . | gzip -9 > Packages.gz

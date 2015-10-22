@@ -37,6 +37,7 @@ case "$1" in
        # Set file and directory permissions
        chown root:$SERVER_USER /etc/freenet /etc/freenet/noderef
        chmod 2775 /etc/freenet /etc/freenet/noderef
+       chmod 770 /etc/freenet/freenet.ini
        chown $SERVER_USER:adm /var/log/freenet
        chmod 2750 /var/log/freenet
     ;;

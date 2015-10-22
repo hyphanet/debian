@@ -17,3 +17,5 @@
 
 # custom debian ignores
 /freenet-daemon/debian/freenet-daemon.init
+/freenet-daemon/debian/bcprov-jdk15on-152.jar
+/freenet-daemon/debian/seednodes.fref
