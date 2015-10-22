@@ -20,17 +20,8 @@ Install dependencies as listed under `Build-Depends` in `debian/control`:
     libcommons-compress-java libdb-je-java libecj-java libservice-wrapper-java\
     service-wrapper
 
-[GWT](http://packages.debian.org/search?suite=default&section=all&arch=any&searchon=names&keywords=gwt+java) is required and is only available in Squeeze. Bouncy Castle 1.51 is also [required](https://emu.freenetproject.org/pipermail/devl/2012-October/036588.html), but [Wheezy](http://packages.debian.org/wheezy/libbcprov-java) has Bouncy Castle 1.44. [Jessie](http://packages.debian.org/jessie/libbcprov-java) and [Sid](http://packages.debian.org/sid/libbcprov-java) has 1.49.
+[GWT](http://packages.debian.org/search?suite=default&section=all&arch=any&searchon=names&keywords=gwt+java) is required and is only available in Squeeze. As a dirty workaround the gwt jars have been added to debian/. Bouncy Castle 1.52 is also [required](https://emu.freenetproject.org/pipermail/devl/2012-October/036588.html), but [Wheezy](http://packages.debian.org/wheezy/libbcprov-java) has Bouncy Castle 1.44. [Jessie](http://packages.debian.org/jessie/libbcprov-java) and [Sid](http://packages.debian.org/sid/libbcprov-java) has 1.49. The build-freenet-daemon.sh now downloads bouncycastle 1.52 by default
 
-That leaves the Squeeze version of GWT and the [Direct Download](https://www.bouncycastle.org/latest_releases.html) Bouncy castle.
-
-Add `APT::Default-Release "wheezy";` to a file (maybe something like `80default-release`) in `/etc/apt/apt.conf.d/` so that upgrades don't change releases.
-Add Squeeze main repo, such as: `deb http://ftp.us.debian.org/debian/ squeeze main` to `/etc/apt/sources.list/`
-
-    apt-get update
-    apt-get -t squeeze install libgwt-user-java libgwt-dev-java
-
-    move bouncycastle jar to fred/lib folder
 
 Run the build script `./build-freenet-daemon`. Built packages will be put into
 this directory.

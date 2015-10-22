@@ -1,8 +1,10 @@
 - have a /usr/bin/freenet so users can run freenet "directly" from the jar
-- use debuild to build source packages rather than our own custom code
+- use debuild or git-buildpackage to build source packages rather than our own custom code
 - currently, tests are run twice
 - split arch-dependent JNI libs out of JAR files
-
+- use a systemd service instead of inid.d
+- wrapper (3.5.20) needs to be updated to current debian version (3.5.22) so we dont package our own
+- bouncycastle in debian repo needs to be updated to version 1.52
 - /var/run/freenet maybe needs to be moved.
 - package the external libs properly so that we can get rid of the ant-contrib dependency
 
