@@ -1,5 +1,9 @@
 This file is for updates that change very frequently, on a per-commit basis.
 
+2015-10-23: fred has updates to build 1470, contrib updated to v29 which freenet currently uses
+gwt has been added to the debian directory for easy building
+the build script downloads bouncycastle when the -u argument is issued
+
 2012-08-02: some versions of gwt are affected by bug #7561 which causes the
 build to fail. make sure you apply the patch from that bug report and compile
 gwt yourself, then compile this package.
