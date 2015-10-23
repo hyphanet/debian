@@ -36,9 +36,9 @@ install/freenet-daemon::
 	  $(CURDIR)/contrib/freenet_ext/*.jar
 	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java \
 	  $(CURDIR)/fred/dist/freenet.jar
-	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/lib/java/freenet \
+	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java/freenet \
 	  $(CURDIR)/contrib/wrapper/lib/wrapper.jar
-	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/lib/java/freenet \
+	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java/freenet \
 	  $(CURDIR)/debian/bcprov-jdk15on-152.jar
 
 clean::
