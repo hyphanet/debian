@@ -1,6 +1,6 @@
 [submodule "freenet-daemon/contrib"]
 	path = freenet-daemon/contrib
-	url = git://github.com/freenet/contrib-staging.git
+	url = git://github.com/freenet/contrib.git
 [submodule "freenet-daemon/fred"]
 	path = freenet-daemon/fred
 	url = https://github.com/freenet/fred.git
