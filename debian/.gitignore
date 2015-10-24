@@ -1,0 +1,10 @@
+# standard debian ignores
+/files
+/*.debhelper.log
+/*.debhelper
+/*.substvars
+/*stamp*
+/freenet-daemon/
+
+# custom debian ignores
+/freenet-daemon.init

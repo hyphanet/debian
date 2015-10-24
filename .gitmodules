@@ -1,6 +1,6 @@
-[submodule "freenet-daemon/fred"]
-	path = freenet-daemon/fred
+[submodule "fred"]
+	path = fred
 	url = git://github.com/freenet/fred.git
-[submodule "freenet-daemon/contrib"]
-	path = freenet-daemon/contrib
+[submodule "contrib"]
+	path = contrib
 	url = git://github.com/freenet/contrib.git
