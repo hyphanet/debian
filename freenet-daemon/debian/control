@@ -5,8 +5,9 @@ Maintainer: Masayuki Hatta (mhatta) <mhatta@debian.org>
 Build-Depends: cdbs, debhelper (>= 7), javahelper, quilt, adduser (>= 3.11),
  git-core, default-jdk, ant, ant-optional, ant-contrib, jflex, junit4,
  libcommons-collections3-java, libcommons-compress-java, libdb-je-java,
- libecj-java, libgwt-dev-java, libgwt-user-java, libservice-wrapper-java,
+ libecj-java, libservice-wrapper-java,
  service-wrapper, libbcprov-java (>= 1.47)
+# TODO: when GWT re-enters Debian: libgwt-dev-java, libgwt-user-java,
 Standards-Version: 3.9.1
 Homepage: http://freenetproject.org/
 Tag: interface::daemon, network::server

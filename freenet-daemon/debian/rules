@@ -41,7 +41,8 @@ install/freenet-daemon::
 
 clean::
 	# jar packages
-	cd $(CURDIR)/fred/ && ant -f build-clean.xml clean-all
+	# TODO: when GWT re-enters Debian: use "clean-all" here instead.
+	cd $(CURDIR)/fred/ && ant -f build-clean.xml clean clean-doc
 	cd $(CURDIR)/contrib/freenet-ext/ && ant clean-all
 	# wrapper service sh
 	rm -f $(CURDIR)/debian/freenet-daemon.init
