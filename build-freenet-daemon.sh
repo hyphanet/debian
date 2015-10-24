@@ -37,7 +37,7 @@ done
 shift `expr $OPTIND - 1`
 
 if [ "$(dirname "$0")" != "." -o ! -d ".git" ]; then
-	echo >&2 "must be run as ./$(basename "$0") from the debian-staging git repo"
+	echo >&2 "must be run as ./$(basename "$0") from the freenet debian git repo"
 	exit 1
 fi
 
