@@ -1,36 +1,31 @@
 #!/usr/bin/make -f
 
-include /usr/share/cdbs/1/rules/debhelper.mk
-include /usr/share/cdbs/1/rules/patchsys-quilt.mk
+include /usr/share/dpkg/default.mk
 
-include /usr/share/javahelper/java-vars.mk
-include /usr/share/cdbs/1/class/javahelper.mk
-# not much help atm, since we need to use ant twice in the same package
-#include /usr/share/cdbs/1/class/ant.mk
+# from fred/src/freenet/node/Version.java
+FREENET_VERSION := 0.7.5
+# lazy evaluation
+VCS_VERSION      = $(FREENET_VERSION)+$(shell cd fred && git describe --always --abbrev=4)
 
-PACKAGE              := $(DEB_SOURCE_PACKAGE)
-VERSION              := $(DEB_UPSTREAM_VERSION)
-JAVA_HOME            := /usr/lib/jvm/default-java
-WRAPPER_INIT         := /usr/share/wrapper/make-wrapper-init.sh
+ANT_EXT         := cd $(CURDIR)/contrib/freenet-ext/ && ant -propertyfile $(CURDIR)/debian/contrib.override.properties
+ANT_FRED        := cd $(CURDIR)/fred/ && ant -propertyfile $(CURDIR)/debian/freenet.override.properties -f build-clean.xml
+WRAPPER_INIT    := /usr/share/wrapper/make-wrapper-init.sh
 
-build/freenet-daemon::
+%:
+	dh $@ --with javahelper
+
+override_dh_auto_build:
 	# wrapper service sh
-	cd $(CURDIR)/contrib/freenet-ext/ && \
-	  ant -Dextlib.wrapper.suppress=false -propertyfile $(CURDIR)/debian/contrib.override.properties prepare-libsrc
-	cd $(CURDIR)/contrib/wrapper/ && \
-	  $(WRAPPER_INIT) -q < $(CURDIR)/debian/freenet-daemon.service.params > init.d
-	cd $(CURDIR)/contrib/wrapper/ && \
-	  $(CURDIR)/debian/customise-wrapper-sh.sh $(CURDIR)/debian/freenet-daemon.service.params $(CURDIR)/debian/freenet-daemon.service.preinit
+	sed -e 's/@version@/$(FREENET_VERSION)/' $(CURDIR)/debian/freenet-daemon.service.params | \
+	  $(WRAPPER_INIT) -q > "$(CURDIR)/debian/freenet-daemon.init"
 	# jar packages
-	cd $(CURDIR)/contrib/freenet-ext/ && \
-	  ant -propertyfile $(CURDIR)/debian/contrib.override.properties package
-	cd $(CURDIR)/fred/ && \
-	  ant -propertyfile $(CURDIR)/debian/freenet.override.properties -f build-clean.xml package
+	$(ANT_EXT) package
+	$(ANT_FRED) package-only
 
-install/freenet-daemon::
-	# wrapper service sh
-	install -m 755 $(CURDIR)/contrib/wrapper/init.d \
-	  $(CURDIR)/debian/freenet-daemon.init
+override_dh_auto_test:
+	$(ANT_FRED) unit
+
+override_dh_auto_install:
 	# jar packages
 	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java/freenet \
 	  $(CURDIR)/contrib/freenet-ext/dist/*.jar
@@ -39,11 +34,35 @@ install/freenet-daemon::
 	#install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/lib/java/freenet \
 	#  $(CURDIR)/contrib/freenet-ext/dist/freenet-ext_native.jar
 
-clean::
+override_dh_auto_clean:
 	# jar packages
 	# TODO: when GWT re-enters Debian: use "clean-all" here instead.
-	cd $(CURDIR)/fred/ && ant -f build-clean.xml clean clean-doc
-	cd $(CURDIR)/contrib/freenet-ext/ && ant clean-all
+	$(ANT_FRED) clean clean-doc
+	$(ANT_EXT) clean-all
 	# wrapper service sh
 	rm -f $(CURDIR)/debian/freenet-daemon.init
-	# rm -rf $(CURDIR)/contrib/freenet-ext/lib/ && mkdir $(CURDIR)/contrib/freenet-ext/lib/
+	# downloaded libs
+	rm -rf $(CURDIR)/contrib/freenet-ext/lib/*
+
+get-seednodes:
+	wget -N https://downloads.freenetproject.org/alpha/opennet/seednodes.fref -O debian/seednodes.fref
+
+vcs-print-version:
+	@echo $(VCS_VERSION)
+
+vcs-init:
+	git submodule update --init
+
+vcs-update:
+	for path in contrib fred; do cd "$$path" && git checkout master && git pull origin && cd -; done
+
+vcs-clean:
+	for path in contrib fred; do cd "$$path" && git reset --hard HEAD && git clean -fdx && cd -; done
+
+vcs-mk-origtargz:
+	test ! -f ../$(DEB_SOURCE)_$(VCS_VERSION).orig.tar.xz
+	tar -cJ --exclude-vcs --xform 's,^\./,$(DEB_SOURCE)/,' \
+	  -f ../$(DEB_SOURCE)_$(VCS_VERSION).orig.tar.xz --exclude=debian --exclude=.gitmodules .
+
+vcs-update-origtargz: vcs-init vcs-clean vcs-update vcs-mk-origtargz
+	dch -v $(VCS_VERSION)-1 "New upstream release."

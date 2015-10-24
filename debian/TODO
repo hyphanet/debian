@@ -1,10 +1,10 @@
 - have a /usr/bin/freenet so users can run freenet "directly" from the jar
-- use debuild to build source packages rather than our own custom code
-- currently, tests are run twice
 - split arch-dependent JNI libs out of JAR files
+  then make freenet-daemon Arch: all, with a side package Arch: any
 
 - /var/run/freenet maybe needs to be moved.
 - package the external libs properly so that we can get rid of the ant-contrib dependency
+  and so that the build process does not have to dl stuff from the internet
 
 - fred: program directories need to be put in a new section in the freenet config.
 - split wrapper.conf up

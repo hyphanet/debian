@@ -1,0 +1,7 @@
+# lintian not smart enough to detect these things for service-wrapper-java
+freenet-daemon binary: init.d-script-does-not-source-init-functions etc/init.d/freenet-daemon
+freenet-daemon binary: init.d-script-does-not-implement-required-option etc/init.d/freenet-daemon start
+freenet-daemon binary: init.d-script-does-not-implement-required-option etc/init.d/freenet-daemon stop
+freenet-daemon binary: init.d-script-does-not-implement-required-option etc/init.d/freenet-daemon restart
+freenet-daemon binary: init.d-script-does-not-implement-required-option etc/init.d/freenet-daemon force-reload
+freenet-daemon binary: init.d-script-does-not-implement-optional-option etc/init.d/freenet-daemon status

@@ -1,20 +1,21 @@
 Source: freenet-daemon
 Section: net
 Priority: extra
-Maintainer: Masayuki Hatta (mhatta) <mhatta@debian.org>
-Build-Depends: cdbs, debhelper (>= 7), javahelper, quilt, adduser (>= 3.11),
+Maintainer: Ximin Luo <infinity0@debian.org>
+Uploaders: Masayuki Hatta <mhatta@debian.org>
+Build-Depends: debhelper (>= 9), javahelper, quilt, adduser (>= 3.11),
  git-core, default-jdk, ant, ant-optional, ant-contrib, jflex, junit4,
  libcommons-collections3-java, libcommons-compress-java, libdb-je-java,
  libecj-java, libservice-wrapper-java,
  service-wrapper, libbcprov-java (>= 1.47)
 # TODO: when GWT re-enters Debian: libgwt-dev-java, libgwt-user-java,
-Standards-Version: 3.9.1
+Standards-Version: 3.9.6
 Homepage: http://freenetproject.org/
 Tag: interface::daemon, network::server
 
 Package: freenet-daemon
 Architecture: any
-Depends: adduser, default-jre-headless, service-wrapper, libbcprov-java
+Depends: adduser, default-jre-headless, service-wrapper, libbcprov-java,
  ${shlibs:Depends}, ${misc:Depends}, ${java:Depends}
 Replaces: fred
 Conflicts: fred
