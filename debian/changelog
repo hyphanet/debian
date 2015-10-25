@@ -1,9 +1,9 @@
-freenet-daemon (0.7.5+build01444-1) UNRELEASED; urgency=medium
+freenet-daemon (0.7.5+build01444+ext50-1) UNRELEASED; urgency=medium
 
   * Update Debian package to be more standard.
   * New upstream release.
 
- -- Ximin Luo <infinity0@debian.org>  Sat, 24 Oct 2015 22:19:43 +0200
+ -- Ximin Luo <infinity0@debian.org>  Sun, 25 Oct 2015 14:18:29 +0100
 
 freenet-daemon (0.7.5-0.4) experimental; urgency=low
 

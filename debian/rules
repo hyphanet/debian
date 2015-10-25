@@ -5,7 +5,9 @@ include /usr/share/dpkg/default.mk
 # from fred/src/freenet/node/Version.java
 FREENET_VERSION := 0.7.5
 # lazy evaluation
-VCS_VERSION      = $(FREENET_VERSION)+$(shell cd fred && git describe --always --abbrev=4)
+VCS_EXT_VER      = $(shell cd contrib && git describe --always --abbrev=4 | sed 's/^v//')
+VCS_FRED_VER     = $(shell cd fred && git describe --always --abbrev=4)
+VCS_VERSION      = $(FREENET_VERSION)+$(VCS_FRED_VER)+ext$(VCS_EXT_VER)
 
 ANT_EXT         := cd $(CURDIR)/contrib/freenet-ext/ && ant -propertyfile $(CURDIR)/debian/contrib.override.properties
 ANT_FRED        := cd $(CURDIR)/fred/ && ant -propertyfile $(CURDIR)/debian/freenet.override.properties -f build-clean.xml
