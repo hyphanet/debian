@@ -17,7 +17,8 @@ Install dependencies as listed under `Build-Depends` in `debian/control`:
     # mk-build-deps -i
 
 Then you can build a Debian package from this repository directly. Brief
-instructions are:
+instructions are to fetch or copy an existing [Bouncy Castle 1.52](https://www.bouncycastle.org/latest_releases.html)
+to `bcprov-jdk15on-152.jar`, then:
 
     $ git submodule update --init
     $ debian/rules vcs-mk-origtargz # if it doesn't already exist

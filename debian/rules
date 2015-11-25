@@ -33,6 +33,8 @@ override_dh_auto_install:
 	  $(CURDIR)/contrib/freenet-ext/dist/*.jar
 	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java \
 	  $(CURDIR)/fred/dist/freenet.jar
+	install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/share/java/freenet \
+	  $(CURDIR)/bcprov-jdk15on-152.jar
 	#install -m 644 -t $(CURDIR)/debian/freenet-daemon/usr/lib/java/freenet \
 	#  $(CURDIR)/contrib/freenet-ext/dist/freenet-ext_native.jar
 

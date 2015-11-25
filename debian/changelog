@@ -1,3 +1,9 @@
+freenet-daemon (0.7.5+testing-build-1471-pre2-4-g6863d+ext50) UNRELEASED; urgency=medium
+
+  * Testing version based on a development snapshot of 1471.
+
+ -- Steve Dougherty <steve@asksteved.com>  Sat, 25 Nov 2015 01:26:34 -0500
+
 freenet-daemon (0.7.5+build01444+ext50-1) UNRELEASED; urgency=medium
 
   * Update Debian package to be more standard.
